@@ -1,0 +1,47 @@
+.user-sidebar {
+  width: 20%;
+  padding: 1rem;
+  border-right: 1px solid #ddd;
+  transition: width 0.3s ease;
+  height:100vh
+}
+
+.user-sidebar.user-collapsed {
+  width: 6%; /* Reduced width when collapsed */
+}
+
+.user-menu-item {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, padding 0.3s ease;
+  margin-top: 1rem;
+}
+
+.user-menu-item:hover {
+  background-color: #e38d3f;
+}
+
+.user-menu-text {
+  margin-left: 1rem;
+  transition: opacity 0.3s ease;
+}
+
+.user-sidebar.user-collapsed .user-menu-text {
+  display: none; /* Hide the text when collapsed */
+}
+
+.user-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+hr {
+  margin: 0.5rem 0;
+  border: none;
+  height: 1px;
+  background-color: #ddd;
+}

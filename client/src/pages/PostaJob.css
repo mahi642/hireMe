@@ -1,0 +1,66 @@
+.postjob {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.form {
+  background-color: #1b1c20;
+  width: 80%;
+  height: auto;
+  border-radius: 1rem;
+  margin: 2rem auto;
+  box-shadow: 2px 10px 7px #353840;
+  padding: 1rem;
+}
+
+.postjob-head {
+  text-align: center;
+  color: #e38d3f;
+  font-size: 28px;
+  margin-bottom:1rem;
+}
+
+.form-inputs {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.form-input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.form-input input {
+  padding: 1rem;
+  background-color: black;
+  color: white;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.form-input label {
+  color: rgba(223, 205, 205, 0.794);
+  margin-bottom: 0.5rem;
+}
+
+.editor-container {
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.wrapperClassName {
+  border: 1px solid #f1f1f1;
+  padding: 20px;
+  min-height: 400px;
+}
+
+.editorClassName {
+  height: 200px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+}

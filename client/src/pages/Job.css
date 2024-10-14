@@ -1,0 +1,93 @@
+.job-details {
+  width: 80%;
+  height: auto;
+  border-radius: 0.5rem;
+
+  margin: 0 auto;
+  border: 0.1px solid rgb(225, 216, 216);
+  padding: 2rem;
+}
+.job-head {
+  margin: 2rem 0 0.5rem 0;
+  text-align: center;
+  font-size: 2rem;
+}
+.job-role {
+  font-size: 25px;
+  margin-bottom: 6px;
+}
+.company-name {
+  font-size: 15px;
+}
+.job {
+  display: inline-flex;
+  align-items: center;
+  
+  
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-top: 1rem;
+  margin-left: 5px;
+}
+.about-company {
+  width: 90%;
+  margin: 2rem auto;
+  height: auto;
+  border: 2px groove rgb(146, 137, 137);
+  padding: 1rem;
+}
+.job-part {
+  display: flex;
+}
+.abt-job1 {
+  width: 60%;
+  border: 1px solid white;
+  height: auto;
+  margin: 0.25rem;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+.abt-job2 {
+  width: 40%;
+  border: 1px solid white;
+  height: auto;
+  margin: 0.25rem;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+.job-headings {
+  font-size: 1.5rem;
+  margin: 1rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-decoration: underline;
+}
+.skill-tags,
+.job-perks {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.skill-tag {
+  margin: 0.5rem;
+  background-color: rgb(124, 27, 27);
+  padding: 1rem 1.2rem;
+  border-radius: 1rem;
+}
+
+.job-perk {
+  margin: 0.1rem;
+  background-color: rgb(83, 86, 84);
+  padding: 1rem 1.2rem;
+  border-radius: 1rem;
+}
+
+.job-bottom{
+  border: 1px solid white;
+  width:80%;
+  border-radius: 0.5rem;
+
+ margin: 2rem auto;
+ padding:2rem 
+
+}
+

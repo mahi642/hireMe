@@ -1,0 +1,131 @@
+.jobsearch {
+  width: 95%;
+  background-color: black;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 1rem;
+}
+.search {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: space-around;
+}
+.search-input {
+  border: none; /* Remove the default border */
+  border-bottom: 2px solid white; /* Add a solid underline */
+  outline: none;
+  background-color: #000;
+  color: white;
+}
+
+.search-input:hover {
+  border-bottom: 4px solid white; /* Change the color on focus if needed */
+}
+.search-input::placeholder {
+  color: white; /* Change the color of the placeholder */
+  opacity: 1;
+  text-align: justify; /* Ensure full opacity (some browsers reduce opacity by default) */
+}
+.find-bottom {
+  margin: 1rem auto;
+}
+
+/* .jobs-filter img{
+  height:10rem;
+  border-radius: 1rem;
+} */
+
+.jobs-filter {
+  position: relative; /* This makes the child elements (like the button) position relative to this container */
+  display: inline-block;
+  margin-bottom: 2rem;
+  
+}
+
+.jobs-filter img {
+  width: 100%; /* Adjust image width as needed */
+  height: 15rem;
+  border-radius: 1rem;
+  /* Keeps the image's aspect ratio */
+}
+
+.learn-more-btn {
+  position: absolute;
+  top: 90%; /* Vertically center the button */
+  left: 50%; /* Horizontally center the button */
+  transform: translate(-50%, -50%); /* Adjusts position for perfect centering */
+  background-color: rgba(15, 54, 196, 0.6); /* Semi-transparent background */
+  color: white; /* Button text color */
+  border: none;
+  padding: 10px 10px; /* Button padding */
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px; /* Optional: rounded corners */
+}
+
+.learn-more-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8); /* Darken on hover */
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  margin: 0 2rem;
+}
+
+.filter-options label {
+  margin: 7px 1rem;
+}
+.filter-options1 {
+  margin-right: 1rem;
+  border: none;
+  border-radius: 1rem;
+}
+
+.find-bottom {
+  display: flex;
+  justify-content: space-between;
+}
+.bottom-text {
+  font-size: 2rem;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+}
+.card-date {
+  background-color: white;
+  border-radius: 0.8rem;
+  margin-top: 1rem;
+  padding: 4px 7px;
+}
+.card-top {
+  display: flex;
+  justify-content: space-between;
+}
+.card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 1rem 0;
+}
+.card-data {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 1rem;
+  margin-top: 1rem;
+}
+
+.card-data p {
+  border: 1px solid black;
+  margin: 3px 5px;
+  padding: 3px 5px;
+  border-radius: 1rem;
+}
+.all-cards{
+  display: flex;
+  flex-wrap: wrap;
+  
+
+
+
+}

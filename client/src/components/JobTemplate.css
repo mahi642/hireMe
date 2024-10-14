@@ -1,0 +1,63 @@
+.jobtemplate-container {
+  width: 100%;
+  padding: 1rem;
+}
+
+.jobtemplate-all-cards {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.jobtemplate-card {
+  background-color: rgb(216, 115, 115);
+  height: auto;
+  padding: 8px;
+  border-radius: 0.5rem;
+  margin: 0.5rem;
+}
+
+.jobtemplate-card-top {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin:1rem;
+
+}
+
+.jobtemplate-card-date {
+  background-color: white;
+  border-radius: 0.8rem;
+  margin-right:0rem;
+
+  padding: 4px 7px;
+}
+
+.jobtemplate-company-name {
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 0.5rem;
+
+}
+
+.jobtemplate-role {
+  display: flex;
+  justify-content: center;
+
+}
+
+.jobtemplate-job-role {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.jobtemplate-card-bottom {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.jobtemplate-salary {
+  color: black;
+  font-weight: 700;
+}

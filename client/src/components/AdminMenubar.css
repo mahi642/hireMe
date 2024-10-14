@@ -1,0 +1,55 @@
+.admin-home {
+  display: flex;
+  height: 100vh;
+  width:30%;
+ background-color: black;
+}
+
+.menubar {
+  width: 240px;
+  background-color: black;
+  transition: width 0.3s;
+}
+
+.menubar.collapsed {
+  width: 80px;
+}
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.menu-text {
+  font-size: 18px;
+  margin: 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background-color: #e38d3f;
+}
+
+.menu-divider {
+  height: 1px;
+  background-color: grey;
+  margin: 0.5rem 0;
+}
+
+.main-content {
+  flex-grow: 1;
+  
+  background-color:black; /* You can change the background color */
+}
+
+.menu-item p {
+  margin-left: 10px;
+}

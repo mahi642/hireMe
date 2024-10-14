@@ -1,0 +1,14 @@
+/* Reset all margins, paddings, and borders for all elements */
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+/* Apply default settings for body */
+body {
+  font-family: sans-serif;
+  background:black;
+  color: white;
+}

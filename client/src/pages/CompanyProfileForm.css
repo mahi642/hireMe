@@ -1,0 +1,45 @@
+.company-profile-container {
+  background-color: #1b1c20;
+  width: 80%;
+  height: auto;
+  border-radius: 1rem;
+  margin: 2rem auto;
+  box-shadow: 2px 10px 7px #353840;
+  padding: 1rem;
+}
+
+.company-profile-head {
+  text-align: center;
+  color: #e38d3f;
+  font-size: 28px;
+  margin-bottom:1rem
+}
+
+.company-profile-inputs {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.company-profile-input {
+  display: flex;
+  flex-direction: column;
+  margin:1rem
+  
+}
+
+.company-profile-input input,
+.company-profile-input textarea,
+.company-profile-input select {
+  padding: 1rem 2rem;
+  background-color: black;
+  color: white;
+  border-radius: 0.5rem;
+ 
+  font-size: 1.1rem;
+}
+
+.company-profile-input label {
+  color: rgba(223, 205, 205, 0.794);
+}
+
+

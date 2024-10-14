@@ -1,0 +1,114 @@
+/* Homepage.css */
+.homepage {
+  height: auto; /* Full height of the viewport */
+ 
+  
+  justify-content: center; /* Center horizontally */
+  background-color: black;
+  color:white; /* Background for the whole screen */
+}
+
+.homeheading {
+  text-align: center; /* Center text horizontally */
+  opacity: 0; /* Start as invisible */
+  animation: fadeIn 1s forwards; /* Trigger fadeIn animation */
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0; /* Start transparent */
+    transform: translateY(20px); /* Move down slightly */
+  }
+  to {
+    opacity: 1; /* Fully visible */
+    transform: translateY(0); /* Move back to original position */
+  }
+}
+
+.heading-text {
+  margin: 1rem 0; /* Vertical margin */
+  color: white; /* Text color */
+  font-size: 2rem;
+  font-weight: 800;
+  font-family: 'Roboto';
+  
+
+}
+
+.home-buttons{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+
+
+
+}
+
+.addbtn{
+  background-color: red;
+}
+
+
+/* Example CSS for the animated class */
+.animated {
+  transition: transform 0.5s ease; /* Example transition */
+  transform: scale(1.1); /* Example scale effect */
+}
+
+.hiremepng{
+  
+ margin-right: 5rem;
+
+}
+.hiretext{
+  text-align: start;
+  font-size: 1.3rem;
+  word-spacing: 4px;
+  font-weight: 900;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+/* Image Animations */
+.animate-img {
+  opacity: 0;
+  transform: scale(0.9);
+  animation: scaleUp 1.2s ease forwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+}
+
+@keyframes scaleUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Text Animations */
+.animate-text {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease forwards;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hover Effects */
+.animate-img:hover {
+  transform: scale(1.05); /* Slightly increase size */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}

@@ -1,0 +1,54 @@
+.login1 {
+  width: 70%;
+  background-color: white;
+  height: 500px;
+  margin: 2rem auto;
+  border-radius: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.login-left {
+  width: 40%;
+  height: 100%;
+  background-color: aqua;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-right {
+  width: 60%;
+  color: black;
+ text-align: center;
+
+}
+
+.login-text{
+  margin-top: 3rem;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-weight: 700;
+}
+
+.login-input{
+  background-color:#dde2e7;
+  padding:1rem 4rem;
+  border-radius: 1rem;
+  color:black;
+}
+.login-inputs{
+  margin-top:2rem;
+
+}
+
+.google-login{
+  margin:  auto;
+}
+
+
+
+@media screen and (max-width: 768px) {
+  .login-left, .login-right {
+    width: 100%;
+  }
+}

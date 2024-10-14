@@ -1,0 +1,44 @@
+.user-profile-container{
+  width:80%;
+  height:auto;
+  margin:2rem auto;
+  background-color: #1b1c20;
+  box-shadow:2px 10px 7px #353840;
+  padding:1rem;
+  border-radius: 1rem;
+}
+
+.user-profile-head{
+  text-align: center;
+  color: #e38d3f;
+  font-size: 28px;
+  margin-bottom:1rem;
+
+}
+
+.user-profile-inputs{
+  margin:0 auto;
+}
+.user-profile-input {
+  display: flex;
+  flex-direction: column;
+  margin:1rem
+  
+}
+
+
+.user-profile-input input,
+.user-profile-input textarea,
+.user-profile-input select {
+  padding: 1rem 2rem;
+  background-color: black;
+  color: white;
+  border-radius: 0.5rem;
+ 
+  font-size: 1.1rem;
+}
+
+.user-profile-input label {
+  color: rgba(223, 205, 205, 0.794);
+}
+
