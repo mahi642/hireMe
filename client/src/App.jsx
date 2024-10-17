@@ -20,6 +20,12 @@ import UserProfileForm from "./pages/UserProfileForm";
 import Job from "./pages/Job";
 import Profile from "./pages/Profile"
 import UserBookmarks from "./pages/UserBookmarks";
+import UserProfile from "./pages/UserProfile";
+import PreviousJobs from "./pages/PreviousJobs";
+import CurrentJobs from "./pages/CurrentJobs";
+import PageNotFound from "./pages/PageNotFound"
+
+
 function App() {
 
   return (
@@ -37,7 +43,7 @@ function App() {
             <Route path = "/jobSearch" element ={<FindjobSearch/>}/>
             <Route path = "/postjob"  element ={<PostaJob/>}/>
             <Route path = "/company/profile"  element ={<CompanyProfileForm/>}/>
-            <Route path="/companyHome" element={<CompanyHome/>}/>
+            <Route path="/company/home" element={<CompanyHome/>}/>
             <Route path ="/adminLogin" element ={<AdminLogin/>}/>
             <Route path = "/adminhome" element = {<AdminHome/>}/>
             <Route path = "/admin/users" element = {<UserDetails/>}/>
@@ -45,7 +51,13 @@ function App() {
             <Route path="/user/job/:jobId" element ={<Job/>}/>
             <Route path="/user/home" element ={<Profile/>}/>
             <Route path ="/user/bookmarks" element = {<UserBookmarks/>}/>
+            <Route path = "/profile" element ={<UserProfile/>}/>
+            <Route path = "/company/previousjobs" element={<PreviousJobs/>}/>
+            <Route path = "/company/currentjobs" element={<CurrentJobs/>}/>
+            <Route path = "*" element={<PageNotFound/>}/>
+
             
+
           </Routes>
         </div>
         <Footer />

@@ -3,6 +3,10 @@ import React, { useState } from "react";
 import "./UserProfileForm.css";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
 import { Grid, Button } from "@mui/joy";
+import ReactQuill from "react-quill";
+
+
+
 const UserProfileForm = () => {
   const [file, setFile] = useState(null);
 
@@ -25,8 +29,8 @@ const UserProfileForm = () => {
     const s3 = new S3Client({
       region: REGION,
       credentials: {
-        accessKeyId: import.meta.env.GOOGLE_ACCESSKEY_ID, // Use environment variables in a real app
-        secretAccessKey: import.meta.env.GOOGLE_SECRET_ACCESS_KEY,
+        accessKeyId: import.meta.env.VITE_GOOGLE_ACCESSKEY_ID, // Use environment variables in a real app
+        secretAccessKey: import.meta.env.VITE_GOOGLE_SECRET_ACCESS_KEY,
       },
     });
 
@@ -132,6 +136,16 @@ const UserProfileForm = () => {
                 />
               </div>
             </Grid>
+            <Grid item xs={12} md={6}>
+              <div className="user-profile-input">
+                <label>Skills</label>
+                <input
+                  type="text"
+                  name="userskills"
+                  placeholder="Enter your Skills"
+                />
+              </div>
+            </Grid>
             <Grid item xs={12} md={12}>
               <div className="user-profile-input">
                 <label>Upload your recent resume</label>
@@ -139,6 +153,15 @@ const UserProfileForm = () => {
               </div>
             </Grid>
           </Grid>
+
+          <Grid item xs={12} md={12}>
+            <div className="user-profile-input">
+              <label>About Yourself</label>
+              <ReactQuill/>
+             
+            </div>
+          </Grid>
+
           <div style={{ textAlign: "center" }}>
             <Button
               variant="contained"
@@ -150,6 +173,17 @@ const UserProfileForm = () => {
               }}
             >
               Save
+            </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              style={{
+                backgroundColor: "#e38d3f",
+                margin: "1rem ",
+                padding: "0.5rem 2rem",
+              }}
+            >
+              Cancel
             </Button>
           </div>
         </form>

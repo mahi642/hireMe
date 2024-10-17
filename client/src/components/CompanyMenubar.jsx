@@ -13,9 +13,26 @@ const CompanyMenubar = () => {
   const [navbar, setNavbar] = useState(true);
   const navigate = useNavigate();
 
+
+  const handleDashboard =()=>{
+    navigate("/dashboard")
+  }
+
   const handlePostjob = () => {
     navigate("/postjob");
   };
+
+  const handleCurrentJobs =()=>{
+    navigate("/company/currentjobs");
+  }
+
+  const handlePreviousJobs =()=>{
+    navigate("/company/previousjobs")
+  }
+
+  const handleBookmarkJobs =()=>{
+    navigate("/compnay/bookmarks")
+  }
 
   const handleToggle = () => {
     setNavbar(!navbar);
@@ -45,7 +62,7 @@ const CompanyMenubar = () => {
         />
 
         {/* Dashboard Menu Item */}
-        <div className="menu-item">
+        <div className="menu-item" onClick={handleDashboard}>
           <DashboardIcon />
           {navbar && <p className="menu-text">Dashboard</p>}
         </div>
@@ -56,22 +73,22 @@ const CompanyMenubar = () => {
           {navbar && <p className="menu-text">Post Job</p>}
         </div>
 
-        {/* Previous Jobs Menu Item */}
-        <div className="menu-item">
+        <div className="menu-item" onClick = {handleCurrentJobs}>
+          <WorkIcon />
+          {navbar && <p className="menu-text">Current Jobs</p>}
+        </div>
+
+        <div className="menu-item" onClick={handlePreviousJobs}>
           <WorkIcon />
           {navbar && <p className="menu-text">Previous Jobs</p>}
         </div>
 
         {/* Current Jobs Menu Item */}
-        <div className="menu-item">
-          <WorkIcon />
-          {navbar && <p className="menu-text">Current Jobs</p>}
-        </div>
 
         {/* Bookmarked Jobs Menu Item */}
-        <div className="menu-item">
+        <div className="menu-item" onClick={handleBookmarkJobs}>
           <BookmarkIcon />
-          {navbar && <p className="menu-text">Bookmarked Jobs</p>}
+          {navbar && <p className="menu-text">Bookmarked </p>}
         </div>
       </div>
     </div>

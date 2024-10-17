@@ -5,6 +5,7 @@ const fetchUser = require("../middlewares/gurad")
 
 router.post("/postjob",fetchUser,companyController.postjob);
 router.get("/companydetails",fetchUser,companyController.getdetails)
-
+router.get("/currentjobs",fetchUser,companyController.getCurrentjobs);
+router.get("/previousjobs",fetchUser,companyController.getPreviousJobs);
 
 module.exports = router;

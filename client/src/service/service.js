@@ -389,6 +389,64 @@ const bookmarkJobService = async (jobId) => {
   }
 };
 
+const getCurrentJobsService =async()=>{
+  try{
+
+    const token = localStorage.getItem("auth-token");
+    const url = `${import.meta.env.VITE_API_BASE_URL}/api/company/currentjobs`;
+
+    const res = await fetch(url,{
+      method:"GET",
+      headers:{
+        "Content-Type":"application/json",
+        "auth-token":token
+      }
+    })
+
+    if(!res){
+      console.log("Error in response for getting current jobs in service");
+    }
+    const data = res.json();
+    return data;
+
+
+  }
+  catch(e){
+    console.log("Error in getting current jobs in service");
+    
+
+    throw e;
+
+  }
+}
+
+
+
+const getPreviousJobsService = async () => {
+  try {
+    const token = localStorage.getItem("auth-token");
+    const url = `${import.meta.env.VITE_API_BASE_URL}/api/company/previousjobs`;
+
+    const res = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": token,
+      },
+    });
+
+    if (!res) {
+      console.log("Error in response for getting previous jobs in service");
+    }
+    const data = res.json();
+    return data;
+  } catch (e) {
+    console.log("Error in getting previous jobs in service");
+
+    throw e;
+  }
+};
+
 
 export {
   adminLoginService,
@@ -403,5 +461,7 @@ export {
   applyJobService,
   getAppliedJobsServive,
   getBookmarkJobsService,
-  bookmarkJobService
+  bookmarkJobService,
+  getCurrentJobsService,
+  getPreviousJobsService
 };

@@ -104,7 +104,7 @@ module.exports.getdetails = async (req, res) => {
       return res.status(404).json({ message: "Company not found" }); // Handle company not found case
     }
 
-    
+
 
     // Return the full company details
     return res.status(200).json({
@@ -117,4 +117,51 @@ module.exports.getdetails = async (req, res) => {
       .json({ message: "Server error in fetching company details" }); // Handle errors
   }
 };
+
+
+module.exports.getCurrentjobs = async (req, res) => {
+  try {
+    const companyId = req.user.id;
+
+ const today = new Date();
+    const jobs = await Job.find({ company: companyId ,
+      deadLine:{$gte:today}
+    });
+    if (!jobs) {
+      return res.status(404).json({ message: "No jobs found" });
+    }
+    
+    // const currentjobs = jobs.filter((job) => job.deadline >= today);
+
+    return res.status(200).json({ jobs: jobs });
+  } catch (error) {
+    console.log("Error in getting current jobs at backend", error);
+    return error;
+  }
+};
+
+
+module.exports.getPreviousJobs = async (req, res) => {
+  try {
+    const companyId = req.user.id;
+
+    const today = new Date();
+    const jobs = await Job.find({
+      company: companyId,
+      deadLine: { $lt: today },
+    });
+    if (!jobs) {
+      return res.status(404).json({ message: "No jobs found" });
+    }
+
+    // const currentjobs = jobs.filter((job) => job.deadline >= today);
+
+    return res.status(200).json({ jobs: jobs });
+  } catch (error) {
+    console.log("Error in getting current jobs at backend", error);
+    return error;
+  }
+};
+
+
 
