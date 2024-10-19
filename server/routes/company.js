@@ -7,5 +7,8 @@ router.post("/postjob",fetchUser,companyController.postjob);
 router.get("/companydetails",fetchUser,companyController.getdetails)
 router.get("/currentjobs",fetchUser,companyController.getCurrentjobs);
 router.get("/previousjobs",fetchUser,companyController.getPreviousJobs);
+router.get("/applications/:jobId",fetchUser,companyController.getApplications);
+
+
 
 module.exports = router;

@@ -448,6 +448,64 @@ const getPreviousJobsService = async () => {
 };
 
 
+ const updateUserProfileService = async (formData) => {
+  try {
+    const token = localStorage.getItem("auth-token");
+
+    const url = `${import.meta.env.VITE_API_BASE_URL}/api/user/upload`;
+
+    const response = await fetch(url, {
+      method: "POST",
+      body: formData,
+      headers:{
+        
+        "auth-token":token
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.msg || "Something went wrong");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error updating user profile:", error.message);
+    throw error;
+  }
+};
+
+
+const getJobApplicationsService = async(jobId)=>{
+  try {
+    const token = localStorage.getItem("auth-token");
+    const url = `${import.meta.env.VITE_API_BASE_URL}/api/company/applications/${jobId}`;
+
+    const response = await fetch(url,{
+      method:"GET",
+      headers:{
+        "auth-token":token,
+        "Content-Type":"application/json"
+      }
+    })
+
+    if(!response){
+      throw new Error("Failed to fetch job applications");
+
+    }
+
+    const data = await response.json();
+    return data;
+
+    
+  } catch (error) {
+    
+    console.error("Error getting job applications in service : ", error.message);
+  }
+}
+
+
 export {
   adminLoginService,
   getUserDetailsService,
@@ -463,5 +521,7 @@ export {
   getBookmarkJobsService,
   bookmarkJobService,
   getCurrentJobsService,
-  getPreviousJobsService
+  getPreviousJobsService,
+  updateUserProfileService,
+  getJobApplicationsService
 };

@@ -24,6 +24,8 @@ import UserProfile from "./pages/UserProfile";
 import PreviousJobs from "./pages/PreviousJobs";
 import CurrentJobs from "./pages/CurrentJobs";
 import PageNotFound from "./pages/PageNotFound"
+import ShowJobDetails from "./pages/ShowJobDetails";
+import AppliedUsers from "./pages/AppliedUsers";
 
 
 function App() {
@@ -54,7 +56,15 @@ function App() {
             <Route path = "/profile" element ={<UserProfile/>}/>
             <Route path = "/company/previousjobs" element={<PreviousJobs/>}/>
             <Route path = "/company/currentjobs" element={<CurrentJobs/>}/>
+            <Route path = "/company/job/:jobId" element = {<ShowJobDetails/>}/>
+            <Route path = "/company/applications/:jobId" element={<AppliedUsers/>}/>
+
+
+
+
+
             <Route path = "*" element={<PageNotFound/>}/>
+            
 
             
 

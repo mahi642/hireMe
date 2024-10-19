@@ -71,9 +71,7 @@ module.exports.createUser = async (req, res) => {
         website: website|| "https://example.com",
         companyDescription: companyDescription || "This is a default company description",
       });
-    } else {
-      return res.status(400).json({ msg: "Invalid role specified" });
-    }
+    } 
 
     // Create JWT token
     const data = {

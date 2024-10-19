@@ -1,6 +1,9 @@
 const Job = require("../models/job"); // Import the Job model
 const User = require("../models/user"); // Assuming you have a User model
 const Company = require("../models/company");
+const cloudinary = require("../utils/cloudinary");
+const fs = require("fs");
+
 
 module.exports.applyJob = async (req, res) => {
   const jobId = req.params.jobId; // Get job ID from request parameters
@@ -391,4 +394,51 @@ module.exports.bookmarkedJobs = async (req, res) => {
       .json({ message: "Error retrieving bookmarked jobs" });
   }
 };
+
+
+
+module.exports.updateprofile = async (req, res) => {
+  try {
+    const {
+      userName,
+      userEmail,
+      highestEducation,
+      location,
+      userExperience,
+      userSkills,
+      aboutYourself,
+    } = req.body;
+
+    // Check if the user exists
+    const user = await User.findById(req.user.id); // Assuming req.user contains the logged-in user's info from fetchUser middleware
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    // Update user information
+    user.name = userName;
+    user.email = userEmail;
+    user.highestEducation = highestEducation;
+    user.location = location;
+    user.experience = userExperience;
+    user.skills = userSkills.split(",").map((skill) => skill.trim()); // Convert skills to an array
+    user.aboutYourself = aboutYourself;
+
+    // If a resume was uploaded, save its public ID and URL
+    if (req.file) {
+      user.resume.publicId = req.file.filename; // or req.file.public_id if using CloudinaryStorage
+      user.resume.url = req.file.path; // or req.file.secure_url if using CloudinaryStorage
+    }
+    console.log("Resume URL:", user.resume.url);
+
+    // Save the updated user
+    await user.save();
+    res.status(200).json({ msg: "Profile updated successfully", user });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
+};
+
+
 

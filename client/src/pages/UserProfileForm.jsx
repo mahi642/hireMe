@@ -1,14 +1,13 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import React, { useState } from "react";
 import "./UserProfileForm.css";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
 import { Grid, Button } from "@mui/joy";
-import ReactQuill from "react-quill";
-
-
+import ReactQuill from "react-quill"; // Import for the text editor
+import { updateUserProfileService } from "../service/service";
 
 const UserProfileForm = () => {
   const [file, setFile] = useState(null);
+  const [aboutYourself, setAboutYourself] = useState("");
 
   const handleFileChange = (e) => {
     e.preventDefault();
@@ -17,37 +16,30 @@ const UserProfileForm = () => {
   };
 
   const uploadFile = async (e) => {
-    e.preventDefault(); // Prevent form submission
-    if (!file) {
+    e.preventDefault();
+    const form = e.target;
+
+    const formData = new FormData();
+    formData.append("userName", form.userName.value);
+    formData.append("userEmail", form.userEmail.value);
+    formData.append("highestEducation", form.highestEducation.value);
+    formData.append("location", form.location.value);
+    formData.append("userExperience", form.userExperience.value);
+    formData.append("userSkills", form.userskills.value);
+    formData.append("aboutYourself", aboutYourself);
+
+    if (file) {
+      formData.append("resume", file);
+    } else {
       alert("Please select a file first.");
       return;
     }
 
-    const S3_BUCKET = "vedio-bucket-s3";
-    const REGION = "eu-north-1";
-
-    const s3 = new S3Client({
-      region: REGION,
-      credentials: {
-        accessKeyId: import.meta.env.VITE_GOOGLE_ACCESSKEY_ID, // Use environment variables in a real app
-        secretAccessKey: import.meta.env.VITE_GOOGLE_SECRET_ACCESS_KEY,
-      },
-    });
-
-    const params = {
-      Bucket: S3_BUCKET,
-      Key: file.name,
-      Body: file,
-      ACL: "public-read", // Set permissions if needed
-    };
-
     try {
-      const data = await s3.send(new PutObjectCommand(params));
-      console.log("File uploaded successfully:", data);
-      alert("File uploaded successfully.");
+      const data = await updateUserProfileService(formData);
+      alert("Profile updated successfully.");
     } catch (error) {
-      console.error("Error uploading file:", error);
-      alert("Failed to upload file.");
+      alert("Failed to update profile.");
     }
   };
 
@@ -55,13 +47,13 @@ const UserProfileForm = () => {
     try {
       const res = await fetch("http://ip-api.com/json");
       const data = await res.json();
-      console.log(data); // Handle the location data here
+      console.log(data);
     } catch (error) {
       console.error("Error fetching location:", error);
     }
   };
 
- 
+
 
   return (
     <div className="user-profile-container">
@@ -76,23 +68,27 @@ const UserProfileForm = () => {
                   type="text"
                   name="userName"
                   placeholder="Enter your name"
+                  required
                 />
               </div>
             </Grid>
+
             <Grid item xs={12} md={6}>
               <div className="user-profile-input">
                 <label>Email</label>
                 <input
                   type="email"
                   name="userEmail"
-                  placeholder="Enter your Email"
+                  placeholder="Enter your email"
+                  required
                 />
               </div>
             </Grid>
+
             <Grid item xs={12} md={6}>
               <div className="user-profile-input">
                 <label>Highest Education</label>
-                <select>
+                <select name="highestEducation" required>
                   <option value="high-school">High School</option>
                   <option value="bachelor">Bachelor's Degree</option>
                   <option value="master">Master's Degree</option>
@@ -101,6 +97,7 @@ const UserProfileForm = () => {
                 </select>
               </div>
             </Grid>
+
             <Grid item xs={12} md={6}>
               <div className="user-profile-input">
                 <div
@@ -123,43 +120,52 @@ const UserProfileForm = () => {
                     <AddLocationIcon sx={{ marginLeft: "0.5rem" }} />
                   </p>
                 </div>
-                <input type="text" />
+                <input type="text" name="location" required />
               </div>
             </Grid>
+
             <Grid item xs={12} md={6}>
               <div className="user-profile-input">
-                <label>Experience</label>
+                <label>Experience (in years)</label>
                 <input
-                  type="experience"
+                  type="number"
                   name="userExperience"
-                  placeholder="Enter your experience(in years)"
+                  placeholder="Enter your experience"
+                  required
                 />
               </div>
             </Grid>
+
             <Grid item xs={12} md={6}>
               <div className="user-profile-input">
                 <label>Skills</label>
                 <input
                   type="text"
                   name="userskills"
-                  placeholder="Enter your Skills"
+                  placeholder="Enter your skills"
+                  required
                 />
               </div>
             </Grid>
+
             <Grid item xs={12} md={12}>
               <div className="user-profile-input">
                 <label>Upload your recent resume</label>
-                <input type="file" onChange={handleFileChange} />
+                <input type="file" onChange={handleFileChange} required />
               </div>
             </Grid>
-          </Grid>
 
-          <Grid item xs={12} md={12}>
-            <div className="user-profile-input">
-              <label>About Yourself</label>
-              <ReactQuill/>
-             
-            </div>
+            <Grid item xs={12} md={12}>
+              <div className="user-profile-input">
+                <label>About Yourself</label>
+                <ReactQuill
+                  value={aboutYourself}
+                  onChange={setAboutYourself} // Update state for ReactQuill
+                  name="aboutYourself"
+                  placeholder="Tell something about yourself"
+                />
+              </div>
+            </Grid>
           </Grid>
 
           <div style={{ textAlign: "center" }}>
@@ -168,7 +174,7 @@ const UserProfileForm = () => {
               type="submit"
               style={{
                 backgroundColor: "#e38d3f",
-                margin: "1rem ",
+                margin: "1rem",
                 padding: "0.5rem 2rem",
               }}
             >
@@ -176,10 +182,9 @@ const UserProfileForm = () => {
             </Button>
             <Button
               variant="contained"
-              type="submit"
               style={{
                 backgroundColor: "#e38d3f",
-                margin: "1rem ",
+                margin: "1rem",
                 padding: "0.5rem 2rem",
               }}
             >

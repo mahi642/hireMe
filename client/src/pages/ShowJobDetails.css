@@ -1,0 +1,30 @@
+.job-paper{
+  background-color: aqua;
+}
+.job-title{
+  font-size: 1.5em;
+  font-family: 'Times New Roman', Times, serif;
+  text-align: center;
+}
+
+.job-value{
+  background-color: rgb(167, 159, 159);
+  padding: 0.3rem 1rem;
+  border-radius: 0.4rem;
+  text-align: center;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+.job-skills{
+  display: flex;
+  flex-wrap: wrap;
+
+}
+.job-skills p{
+  background-color:  rgb(167, 159, 159);
+  padding:0.5rem 2rem ;
+  margin:0.2rem 0.2rem;
+  border-radius: 0.5rem;
+
+
+
+}

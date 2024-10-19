@@ -13,7 +13,7 @@ const jobSchema = new mongoose.Schema({
   },
 });
 
-const userSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -36,12 +36,47 @@ const userSchema = mongoose.Schema(
       enum: ["user", "admin", "company"],
       default: "user", // Default role
     },
-    jobs: [jobSchema],
-    bookmarkedJobs: [jobSchema],
+    jobs: [jobSchema], // Jobs the user has applied for
+    bookmarkedJobs: [jobSchema], // Jobs bookmarked by the user
+    location: {
+      type: String,
+    },
+    skills: {
+      type: [String], // Array of strings for skills
+    },
+    experience: {
+      type: Number,
+    },
+    aboutYourself: {
+      type: String,
+    },
+    highestEducation: {
+      type: String, // Corrected the spelling from highestEduction
+    },
+    logo: {
+      publicId: {
+        type: String,
+        required: false, // Logo is not required initially
+      },
+      url: {
+        type: String,
+        required: false,
+      },
+    },
+    resume: {
+      publicId: {
+        type: String,
+        required: false, // Resume is not required initially
+      },
+      url: {
+        type: String,
+        required: false,
+      },
+    },
   },
-  { timestamps: true }
-); // Automatically create createdAt and updatedAt fields
+  { timestamps: true } // Automatically create createdAt and updatedAt fields
+);
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = User; // Export the User model
+module.exports = User;

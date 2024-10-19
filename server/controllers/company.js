@@ -163,5 +163,57 @@ module.exports.getPreviousJobs = async (req, res) => {
   }
 };
 
+module.exports.getApplications = async (req, res) => {
+  try {
+    const companyId = req.user.id;
+    const jobId = req.params.jobId;
+
+    // Find the company user by ID
+    const user = await User.findById(companyId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if the user has the role of 'company'
+    const role = user.role;
+    if (role !== "company") {
+      return res
+        .status(403)
+        .json({ message: "You are not authorized to access this route" });
+    }
+
+    // Find the job by jobId
+    const job = await Job.findById(jobId); // Await is required here to resolve the promise
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    // Get the applied array from the job document
+    const appliedUsers = job.applied;
+
+    // Fetch details of all users from the applied array
+    const applicants = await Promise.all(
+      appliedUsers.map(async (applicant) => {
+        const userDetails = await User.findById(applicant.user).select(
+          "name email experience highestEducation location skills resume.url"
+        ); // Select specific fields like name and email
+        return {
+          user: userDetails,
+          shortlisted: applicant.shortlisted,
+          selected: applicant.selected,
+        };
+      })
+    );
+
+    console.log("applications", applicants);
+
+    return res.status(200).json({ applicants });
+  } catch (error) {
+    console.log("Error in getting applications at backend", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
 
 

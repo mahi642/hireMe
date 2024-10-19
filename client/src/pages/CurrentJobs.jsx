@@ -7,7 +7,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import PaidIcon from "@mui/icons-material/Paid";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { getCurrentJobsService } from "../service/service";
-
+import { useNavigate } from "react-router-dom";
 const CurrentJobs = () => {
   const [currentJobs, setCurrentJobs] = useState([]); // State to store current jobs
 
@@ -25,10 +25,15 @@ const CurrentJobs = () => {
     fetchdata(); // Call fetchdata on component mount
   }, []); // Correctly use an empty dependency array
 
+
+
+  const navigate = useNavigate();
+
   const handleClick = (jobId) => {
     // Define your handleClick function
     console.log(`Job ID clicked: ${jobId}`);
-    // You can also navigate to a different page or perform other actions here
+    navigate(`/company/job/${jobId}`)
+    
   };
 
   return (
@@ -133,6 +138,7 @@ const CurrentJobs = () => {
           )}
         </div>
       </div>
+    
     </div>
   );
 };
