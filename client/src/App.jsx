@@ -26,6 +26,7 @@ import CurrentJobs from "./pages/CurrentJobs";
 import PageNotFound from "./pages/PageNotFound"
 import ShowJobDetails from "./pages/ShowJobDetails";
 import AppliedUsers from "./pages/AppliedUsers";
+import CompanyProfile from "./pages/CompanyProfile";
 
 
 function App() {
@@ -44,7 +45,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path = "/jobSearch" element ={<FindjobSearch/>}/>
             <Route path = "/postjob"  element ={<PostaJob/>}/>
-            <Route path = "/company/profile"  element ={<CompanyProfileForm/>}/>
+            <Route path = "/company/profileform"  element ={<CompanyProfileForm/>}/>
+            <Route path = "/company/profile" element={<CompanyProfile/>}/>
             <Route path="/company/home" element={<CompanyHome/>}/>
             <Route path ="/adminLogin" element ={<AdminLogin/>}/>
             <Route path = "/adminhome" element = {<AdminHome/>}/>

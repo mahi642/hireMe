@@ -14,88 +14,210 @@ import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { bookmarkJobService } from "../service/service";
 const FindjobSearch = () => {
-  const [value, setValue] = useState([20, 37]);
-  const [filters, setFilters] = useState({
-    fullTime: false,
-    partTime: false,
-    internship: false,
-    project: false,
-    work: false,
-    volunteering: false,
-    fullDay: false,
-    flexibleSchedule: false,
-    shiftWork: false,
-    remote: false,
-  });
+ const [value, setValue] = useState([20, 37]);
+ const [filters, setFilters] = useState({
+   fullTime: false,
+   partTime: false,
+   internship: false,
+   project: false,
+   work: false,
+   volunteering: false,
+   fullDay: false,
+   flexibleSchedule: false,
+   shiftWork: false,
+   remote: false,
+ });
+ const [search, setSearch] = useState({
+ 
+   location: "",
+   jobRole: "",
+   experience: 0,
+   duration: 0,
+   salary: 0,
+ });
 
-  const navigate = useNavigate();
+ const navigate = useNavigate();
 
-  const [jobData, setJobData] = useState([]);
-  const [date, setDate] = useState("");
+ const [jobData, setJobData] = useState([]);
+ const [filteredJobs, setFilteredJobs] = useState([]); // To hold the filtered jobs
 
-  useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const response = await getAllJobs(); // Call the service to fetch jobs
-        console.log("Fetched jobs:", response);
-         console.log("First job structure:", response[0]);  // Log the response
-        setJobData(response); // Directly set jobData to the response array
-      } catch (error) {
-        console.error("Error fetching job data:", error); // Handle error
-      }
-    };
+ useEffect(() => {
+   const fetchJobs = async () => {
+     try {
+       const response = await getAllJobs(); // Call the service to fetch jobs
+       console.log("Fetched jobs:", response);
+       setJobData(response); // Set jobData to the fetched jobs
+       setFilteredJobs(response); // Initialize filteredJobs with all jobs
+     } catch (error) {
+       console.error("Error fetching job data:", error); // Handle error
+     }
+   };
 
-    fetchJobs(); // Fetch jobs when component mounts
-  }, []); // Empty dependency array to run only once
-  const handleChange1 = (event, newValue) => {
-    setValue(newValue);
-  };
+   fetchJobs(); // Fetch jobs when component mounts
+ }, []);
 
-  const handleChange = (event) => {
-    setFilters({ ...filters, [event.target.name]: event.target.checked });
-  };
+ const handleChange1 = (event, newValue) => {
+   setValue(newValue);
+ };
 
-  const handleDetails = (id) => {
-    navigate(`/user/job/${id}`); // Use template literal to insert the job ID
-  };
+ const handleChange = (event) => {
+   const updatedFilters = {
+     ...filters,
+     [event.target.name]: event.target.checked,
+   };
+   setFilters(updatedFilters);
+ };
+
+ const handleSearchChange = (event) => {
+   const { name, value } = event.target;
+   setSearch((prevState) => ({
+     ...prevState,
+     [name]: value,
+   }));
+ };
+
+ // Helper function to apply filters
+ const applyFilters = (jobs) => {
+   const filterConditions = {
+     fullTime: (job) => job.jobType === "Full-Time",
+     partTime: (job) => job.jobType === "Part Time",
+     internship: (job) => job.jobType === "Internship",
+     project: (job) => job.jobType === "Project",
+     work: (job) => job.jobType === "Work",
+     volunteering: (job) => job.jobType === "Volunteering",
+     fullDay: (job) => job.employmentType === "Full Day",
+     flexibleSchedule: (job) => job.employmentType === "Flexible Schedule",
+     shiftWork: (job) => job.employmentType === "Shift Work",
+     remote: (job) => job.workMode === "Remote",
+   };
+
+   // Apply filters conditionally
+   return jobs.filter((job) =>
+     Object.entries(filters).every(([filterName, isActive]) => {
+       return !isActive || filterConditions[filterName](job);
+     })
+   );
+ };
+
+ useEffect(() => {
+   const applyFiltersAndSearch = () => {
+     let filtered = applyFilters(jobData); // First apply the filters
+
+     // Apply search criteria
+     filtered = filtered.filter((job) => {
+     const matchJobRoleOrCompany = search.jobRole
+       ? job.jobRole?.toLowerCase().includes(search.jobRole.toLowerCase()) ||
+         job.name?.toLowerCase().includes(search.jobRole.toLowerCase())
+       : true;
 
 
-  const handleBookmark =async (id)=>{
-    const result = await bookmarkJobService(id);
-    if(!result){
-      alert("Failed to bookmark")
-    }
-    alert("Bookmarked succesfully");
+       const matchLocation = search.location
+         ? job.workLocation
+             ?.toLowerCase()
+             .includes(search.location.toLowerCase())
+         : true;
+       const matchExperience = search.experience
+         ? job.experience <= search.experience
+         : true;
+       const matchDuration = search.duration
+         ? job.duration <= search.duration
+         : true;
+       const matchSalary = search.salary
+         ? job.salary && job.salary >= search.salary
+         : true;
 
-    console.log("bookmarked iid is",id);
-    
+       return (
+         matchJobRoleOrCompany &&
+         matchLocation &&
+         matchExperience &&
+         matchDuration &&
+         matchSalary
+       );
+     });
 
-  }
+     setFilteredJobs(filtered);
+   };
+
+   applyFiltersAndSearch(); // Apply filters and search whenever filters, search, or jobData changes
+ }, [filters, search, jobData]);
+
+ const handleDetails = (id) => {
+   navigate(`/user/job/${id}`); // Use template literal to insert the job ID
+ };
+
+ const handleBookmark = async (id) => {
+   const result = await bookmarkJobService(id);
+   if (!result) {
+     alert("Failed to bookmark");
+   } else {
+     alert("Bookmarked successfully");
+   }
+
+   console.log("bookmarked job id:", id);
+ };
+
+ // Log filtered jobs and filters for debugging purposes
+ useEffect(() => {
+   console.log("Updated filters:", filters);
+   console.log("Filtered jobs:", filteredJobs);
+ }, [filters, filteredJobs]);
 
   return (
     <div className="jobsearch">
       <div className="search">
         <SearchOutlinedIcon sx={{ borderRadius: "50%" }} />
-        <input className="search-input" placeholder="Role" />
+        <input
+          className="search-input"
+          placeholder="Role"
+          name="jobRole"
+          value={search.jobRole}
+          onChange={handleSearchChange}
+        />
         <p>|</p>
         <LocationOnOutlinedIcon />
-        <input className="search-input" placeholder="Location" />
+        <input
+          className="search-input"
+          placeholder="Location"
+          name="location"
+          value={search.location}
+          onChange={handleSearchChange}
+        />
         <p>|</p>
         <WorkHistoryOutlinedIcon />
-        <input className="search-input" placeholder="Experience in years" />
+        <input
+          className="search-input"
+          placeholder="Experience in years"
+          name="experience"
+          value={search.experience}
+          onChange={handleSearchChange}
+        />
         <p>|</p>
         <DateRangeOutlinedIcon />
-        <input className="search-input" placeholder="Job duration in years" />
+        <input
+          className="search-input"
+          placeholder="Job duration in years"
+          name="duration"
+          value={search.duration}
+          onChange={handleSearchChange}
+        />
         <p>|</p>
         <div>
           <div style={{ display: "flex" }}>
             <p>Salary range</p>
-            <p>100$ -200$</p>
+            <p>{`${value[0]}$ - ${value[1]}$`}</p>
           </div>
           <Slider
             value={value}
             onChange={handleChange1}
             valueLabelDisplay="auto"
+            name="salary"
+            onChangeCommitted={(event, newValue) => {
+              setSearch((prev) => ({
+                ...prev,
+                salary: newValue, // Use both values to represent the salary range
+              }));
+              applyFilters(filters);
+            }}
           />
         </div>
       </div>
@@ -241,7 +363,7 @@ const FindjobSearch = () => {
           >
             <p className="bottom-text">Popular jobs</p>
             <div className="all-cards">
-              {jobData.map((job) => (
+              {filteredJobs.map((job) => (
                 <Paper
                   key={job._id}
                   elevation={3}
@@ -279,9 +401,7 @@ const FindjobSearch = () => {
                           backgroundColor: "white",
                           borderRadius: "0.5rem",
                         }}
-                        onClick={()=>
-                          handleBookmark(job._id)
-                        }
+                        onClick={() => handleBookmark(job._id)}
                       />
                     </div>
 
