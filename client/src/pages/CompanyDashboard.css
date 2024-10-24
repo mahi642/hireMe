@@ -1,0 +1,62 @@
+/* CompanyDashboard.css */
+
+.dashboard-container {
+  display: flex;
+}
+
+.dashboard-content {
+  padding: 2rem;
+  width: 80%;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #333;
+}
+
+.dashboard-grid-container {
+  border: 1px solid #ddd;
+  
+  padding: 1.5rem;
+ 
+}
+
+.dashboard-paper {
+  padding: 2rem;
+  text-align: center;
+  background-color: blue;
+  border-radius: 3rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.dashboard-paper:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-icon {
+  font-size: 3rem;
+  color: #1976d2;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-typography {
+  font-weight: bold;
+  font-size: 1.25rem;
+  margin-top: 0.5rem;
+  color: #333;
+}
+
+.dashboard-stat {
+  font-size: 1.5rem;
+  color: #000;
+  margin-top: 0.25rem;
+}

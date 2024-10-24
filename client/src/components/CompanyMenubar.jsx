@@ -15,7 +15,7 @@ const CompanyMenubar = () => {
 
 
   const handleDashboard =()=>{
-    navigate("/dashboard")
+    navigate("/company/dashboard")
   }
 
   const handlePostjob = () => {
@@ -33,6 +33,12 @@ const CompanyMenubar = () => {
   const handleBookmarkJobs =()=>{
     navigate("/compnay/bookmarks")
   }
+
+  const handleProfile =()=>{
+    navigate("/company/profile")
+  }
+
+
 
   const handleToggle = () => {
     setNavbar(!navbar);
@@ -83,6 +89,8 @@ const CompanyMenubar = () => {
           {navbar && <p className="menu-text">Previous Jobs</p>}
         </div>
 
+
+
         {/* Current Jobs Menu Item */}
 
         {/* Bookmarked Jobs Menu Item */}
@@ -90,6 +98,11 @@ const CompanyMenubar = () => {
           <BookmarkIcon />
           {navbar && <p className="menu-text">Bookmarked </p>}
         </div>
+
+        <div className="menu-item" onClick={handleProfile}>
+          <BookmarkIcon />
+          {navbar && <p className="menu-text">Profile</p>}
+          </div>
       </div>
     </div>
   );

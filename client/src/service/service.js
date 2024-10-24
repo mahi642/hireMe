@@ -357,7 +357,6 @@ const getBookmarkJobsService = async () => {
   }
 };
 
-
 const bookmarkJobService = async (jobId) => {
   try {
     const token = localStorage.getItem("auth-token");
@@ -389,38 +388,30 @@ const bookmarkJobService = async (jobId) => {
   }
 };
 
-const getCurrentJobsService =async()=>{
-  try{
-
+const getCurrentJobsService = async () => {
+  try {
     const token = localStorage.getItem("auth-token");
     const url = `${import.meta.env.VITE_API_BASE_URL}/api/company/currentjobs`;
 
-    const res = await fetch(url,{
-      method:"GET",
-      headers:{
-        "Content-Type":"application/json",
-        "auth-token":token
-      }
-    })
+    const res = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": token,
+      },
+    });
 
-    if(!res){
+    if (!res) {
       console.log("Error in response for getting current jobs in service");
     }
     const data = res.json();
     return data;
-
-
-  }
-  catch(e){
+  } catch (e) {
     console.log("Error in getting current jobs in service");
-    
 
     throw e;
-
   }
-}
-
-
+};
 
 const getPreviousJobsService = async () => {
   try {
@@ -447,8 +438,7 @@ const getPreviousJobsService = async () => {
   }
 };
 
-
- const updateUserProfileService = async (formData) => {
+const updateUserProfileService = async (formData) => {
   try {
     const token = localStorage.getItem("auth-token");
 
@@ -457,10 +447,9 @@ const getPreviousJobsService = async () => {
     const response = await fetch(url, {
       method: "POST",
       body: formData,
-      headers:{
-        
-        "auth-token":token
-      }
+      headers: {
+        "auth-token": token,
+      },
     });
 
     if (!response.ok) {
@@ -476,35 +465,72 @@ const getPreviousJobsService = async () => {
   }
 };
 
-
-const getJobApplicationsService = async(jobId)=>{
+const getJobApplicationsService = async (jobId) => {
   try {
     const token = localStorage.getItem("auth-token");
-    const url = `${import.meta.env.VITE_API_BASE_URL}/api/company/applications/${jobId}`;
+    const url = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/company/applications/${jobId}`;
 
-    const response = await fetch(url,{
-      method:"GET",
-      headers:{
-        "auth-token":token,
-        "Content-Type":"application/json"
-      }
-    })
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "auth-token": token,
+        "Content-Type": "application/json",
+      },
+    });
 
-    if(!response){
+    if (!response) {
       throw new Error("Failed to fetch job applications");
-
     }
 
     const data = await response.json();
     return data;
-
-    
   } catch (error) {
-    
-    console.error("Error getting job applications in service : ", error.message);
+    console.error(
+      "Error getting job applications in service : ",
+      error.message
+    );
   }
-}
+};
 
+//get company data deatils for profile
+
+const getCompanyDetailsService = async () => {
+  try {
+    const token = localStorage.getItem("auth-token");
+    const url = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/company/companydetails`;
+
+    const response = await fetch(url, {
+      method: "GET", // Corrected here
+      headers: {
+        "auth-token": token,
+        Content_Type: "application/json",
+      },
+    });
+    console.log("res is", response);
+
+    // Check if response is not ok
+    if (!response.ok) {
+      console.error(
+        "Error in getting details:",
+        response.status,
+        response.statusText
+      );
+      throw new Error("Failed to fetch company details");
+    }
+
+    const data = await response.json();
+    console.log("data is", data);
+
+    return data;
+  } catch (error) {
+    console.error("Error in getting details of company in service:", error);
+    throw error; // Rethrow error to handle it in the calling function
+  }
+};
 
 export {
   adminLoginService,
@@ -523,5 +549,6 @@ export {
   getCurrentJobsService,
   getPreviousJobsService,
   updateUserProfileService,
-  getJobApplicationsService
+  getJobApplicationsService,
+  getCompanyDetailsService,
 };

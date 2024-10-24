@@ -1,33 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Paper, Typography } from "@mui/material";
 import "./CompanyProfile.css";
 import CompanyMenubar from "../components/CompanyMenubar";
 import { Grid } from "@mui/joy";
 import EmailIcon from "@mui/icons-material/Email";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { getCompanyDetailsService } from "../service/service";
 
 const CompanyProfile = () => {
-  // Static company data for now
-  const companyData = {
-    logo: {
-      url: "/pic1.jpg", // Placeholder logo
-    },
-    name: "Tech Innovators Inc.",
-    email: "info@techinnovators.com",
-    location: "San Francisco, CA",
-    numberOfEmployees: 150,
-    description:
-      "Tech Innovators Inc. is a cutting-edge technology company specializing in innovative solutions for the tech industry. We strive to push the boundaries of what's possible.",
-    facilities: ["Cafeteria", "Gym", "Parking", "Remote Work Option"],
+  const [data, setData] = useState(null); // Start with null for loading state
+
+  const fetchData = async () => {
+    try {
+      const result = await getCompanyDetailsService();
+      if (!result || !result.company) {
+        alert("Error in getting profile data");
+      } else {
+        setData(result.company); // Set only the company data
+      }
+    } catch (error) {
+      alert("An error occurred: " + error.message);
+    }
   };
 
+  useEffect(() => {
+    fetchData();
+  }, []); // Empty dependency array to run on mount
+
+  if (!data) {
+    return <Typography variant="h6">Loading...</Typography>;
+  }
+
   return (
-    <div
-      style={{
-        display: "flex",
-      }}
-    >
+    <div style={{ display: "flex" }}>
       <CompanyMenubar />
+
       <div className="profile-main" style={{ width: "100%" }}>
         <Typography variant="h4" style={{ marginBottom: "1rem" }}>
           Company Profile
@@ -45,7 +52,7 @@ const CompanyProfile = () => {
               }}
             >
               <img
-                src={companyData.logo.url}
+                src={"/pic1.jpg"}
                 width={150}
                 alt="company-logo"
                 style={{
@@ -53,7 +60,7 @@ const CompanyProfile = () => {
                   marginBottom: "1rem",
                 }}
               />
-              <Typography variant="h6">{companyData.name}</Typography>
+              <Typography variant="h6">{data.name}</Typography>
             </Paper>
           </Grid>
 
@@ -70,7 +77,7 @@ const CompanyProfile = () => {
                 }}
               >
                 <EmailIcon sx={{ marginRight: "1rem", color: "#1976d2" }} />
-                <Typography variant="body1">{companyData.email}</Typography>
+                <Typography variant="body1">{data.email}</Typography>
               </Paper>
             </Grid>
 
@@ -87,7 +94,7 @@ const CompanyProfile = () => {
                 <LocationOnIcon
                   sx={{ marginRight: "1rem", color: "#1976d2" }}
                 />
-                <Typography variant="body1">{companyData.location}</Typography>
+                <Typography variant="body1">{data.companyLocation}</Typography>
               </Paper>
             </Grid>
 
@@ -100,21 +107,11 @@ const CompanyProfile = () => {
                   textAlign: "justify",
                 }}
               >
-                <p
-                  style={{
-                    fontSize: "1.4rem",
-                    margin: "0.5rem 0",
-                  }}
-                >
+                <p style={{ fontSize: "1.4rem", margin: "0.5rem 0" }}>
                   About the company
                 </p>
-                <Typography
-                  variant="body1"
-                  sx={{
-                    fontFamily: "Times",
-                  }}
-                >
-                  {companyData.description}
+                <Typography variant="body1" sx={{ fontFamily: "Times" }}>
+                  {data.companyDescription}
                 </Typography>
               </Paper>
             </Grid>
@@ -130,67 +127,49 @@ const CompanyProfile = () => {
                 justifyContent: "space-around",
               }}
             >
-              <p
-                style={{
-                  fontSize: "1.4rem",
-                }}
-              >
+              <p style={{ fontSize: "1.4rem", margin: "1rem 0" }}>
                 Number of employees
               </p>
-              <p
-                style={{
-                  fontSize: "1.3rem",
-                }}
-              >
-                {" "}
-                {companyData.numberOfEmployees}
+              <p style={{ fontSize: "1.3rem", margin: "1rem 0" }}>
+                {data.numberOfEmployees}
               </p>
             </Paper>
           </Grid>
+
           <Grid md={8} xs={12}>
-            <Paper
-              sx={{
-                padding: "0.6rem",
-              }}
-            >
-              <p
-                style={{
-                  fontSize: "1.4rem",
-                  marginBottom: "0.5rem",
-                }}
-              >
+            <Paper sx={{ padding: "0.5rem" }}>
+              <p style={{ fontSize: "1.4rem", marginBottom: "0.1rem" }}>
                 Facilities at the company
               </p>
-              <p>
-                {companyData.facilities.map((facility, index) => (
-                  <span
-                    style={{
-                      backgroundColor: "grey",
-                      margin: "1rem 0.5rem",
-                      padding: "0.4rem 1rem",
-                      borderRadius: "0.5rem",
-                    }}
-                    key={index}
-                  >
-                    {facility}
-                    {index < companyData.facilities.length - 1 ? " " : ""}
-                  </span>
-                ))}
+              <p
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                {data.facilitiesProvided &&
+                  data.facilitiesProvided.map((facility, index) => (
+                    <span
+                      style={{
+                        backgroundColor: "grey",
+                        margin: "0.8rem 0.5rem",
+                        padding: "0.4rem 1rem",
+                        borderRadius: "0.5rem",
+                      }}
+                      key={index}
+                    >
+                      {facility}
+                      {index < data.facilitiesProvided.length - 1 ? ", " : ""}
+                    </span>
+                  ))}
               </p>
             </Paper>
           </Grid>
+
+          {/* Additional Info */}
           <Grid xs={12} md={4}>
-            <Paper
-              sx={{
-                borderRadius: "1rem",
-              }}
-            >
-              <p
-                style={{
-                  fontSize: "1.4rem",
-                  textAlign: "center",
-                }}
-              >
+            <Paper sx={{ borderRadius: "1rem" }}>
+              <p style={{ fontSize: "1.4rem", textAlign: "center" }}>
                 Work start time
               </p>
               <p
@@ -201,22 +180,13 @@ const CompanyProfile = () => {
                   margin: "0.5rem 0",
                 }}
               >
-                09:00 AM
+                {data.workStartTime}
               </p>
             </Paper>
           </Grid>
           <Grid xs={12} md={4}>
-            <Paper
-              sx={{
-                borderRadius: "1rem",
-              }}
-            >
-              <p
-                style={{
-                  fontSize: "1.4rem",
-                  textAlign: "center",
-                }}
-              >
+            <Paper sx={{ borderRadius: "1rem" }}>
+              <p style={{ fontSize: "1.4rem", textAlign: "center" }}>
                 Work End time
               </p>
               <p
@@ -227,22 +197,13 @@ const CompanyProfile = () => {
                   margin: "0.5rem 0",
                 }}
               >
-                04:00 PM
+                {data.workEndTime}
               </p>
             </Paper>
           </Grid>
           <Grid xs={12} md={4}>
-            <Paper
-              sx={{
-                borderRadius: "1rem",
-              }}
-            >
-              <p
-                style={{
-                  fontSize: "1.4rem",
-                  textAlign: "center",
-                }}
-              >
+            <Paper sx={{ borderRadius: "1rem" }}>
+              <p style={{ fontSize: "1.4rem", textAlign: "center" }}>
                 Work culture
               </p>
               <p
@@ -253,7 +214,7 @@ const CompanyProfile = () => {
                   margin: "0.5rem 0",
                 }}
               >
-                Innovative
+                {data.workCulture}
               </p>
             </Paper>
           </Grid>

@@ -14,7 +14,7 @@ import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { bookmarkJobService } from "../service/service";
 const FindjobSearch = () => {
- const [value, setValue] = useState([20, 37]);
+ const [value, setValue] = useState([80, 1000]);
  const [filters, setFilters] = useState({
    fullTime: false,
    partTime: false,
@@ -98,6 +98,14 @@ const FindjobSearch = () => {
      })
    );
  };
+ const colors = [
+   "#ffe1cc",
+   "#e3dbfa",
+   "#dff3fe",
+   "#fbe2f4",
+   "#99e4ee",
+   "#d4f7ed",
+ ];
 
  useEffect(() => {
    const applyFiltersAndSearch = () => {
@@ -105,11 +113,10 @@ const FindjobSearch = () => {
 
      // Apply search criteria
      filtered = filtered.filter((job) => {
-     const matchJobRoleOrCompany = search.jobRole
-       ? job.jobRole?.toLowerCase().includes(search.jobRole.toLowerCase()) ||
-         job.name?.toLowerCase().includes(search.jobRole.toLowerCase())
-       : true;
-
+       const matchJobRoleOrCompany = search.jobRole
+         ? job.jobRole?.toLowerCase().includes(search.jobRole.toLowerCase()) ||
+           job.name?.toLowerCase().includes(search.jobRole.toLowerCase())
+         : true;
 
        const matchLocation = search.location
          ? job.workLocation
@@ -122,9 +129,14 @@ const FindjobSearch = () => {
        const matchDuration = search.duration
          ? job.duration <= search.duration
          : true;
-       const matchSalary = search.salary
-         ? job.salary && job.salary >= search.salary
-         : true;
+       // Update matchSalary to handle different types of job.salary
+       const jobSalary =
+         typeof job.salary === "string"
+           ? parseInt(job.salary.replace(/[^0-9]/g, "")) // If salary is a string, extract the number
+           : job.salary || 0; // If salary is a number, use it directly; if undefined, default to 0
+
+       const matchSalary =
+         jobSalary >= value[0] * 1000 && jobSalary <= value[1] * 1000;
 
        return (
          matchJobRoleOrCompany &&
@@ -161,6 +173,9 @@ const FindjobSearch = () => {
    console.log("Updated filters:", filters);
    console.log("Filtered jobs:", filteredJobs);
  }, [filters, filteredJobs]);
+
+ console.log(search);
+ 
 
   return (
     <div className="jobsearch">
@@ -203,20 +218,29 @@ const FindjobSearch = () => {
         <p>|</p>
         <div>
           <div style={{ display: "flex" }}>
-            <p>Salary range</p>
-            <p>{`${value[0]}$ - ${value[1]}$`}</p>
+            <p
+              style={{
+                margin: "0 1rem",
+              }}
+            >
+              Salary{" "}
+            </p>
+            <p>{`${value[0]}k$ - ${value[1]}k$`}</p>
           </div>
           <Slider
             value={value}
             onChange={handleChange1}
             valueLabelDisplay="auto"
             name="salary"
+            min={80} // Minimum value in thousands
+            max={1000} // Maximum value in thousands
+            step={1} // Step size (you can adjust this if you want finer control)
             onChangeCommitted={(event, newValue) => {
               setSearch((prev) => ({
                 ...prev,
                 salary: newValue, // Use both values to represent the salary range
               }));
-              applyFilters(filters);
+              applyFilters(jobData); // Pass jobData here
             }}
           />
         </div>
@@ -363,7 +387,7 @@ const FindjobSearch = () => {
           >
             <p className="bottom-text">Popular jobs</p>
             <div className="all-cards">
-              {filteredJobs.map((job) => (
+              {filteredJobs.map((job, index) => (
                 <Paper
                   key={job._id}
                   elevation={3}
@@ -380,7 +404,7 @@ const FindjobSearch = () => {
                   <Paper
                     elevation={2}
                     sx={{
-                      backgroundColor: "#d4f7ed",
+                      backgroundColor: colors[index % colors.length],
                       height: "75%",
                       width: "100%",
                       margin: "0 auto",
@@ -464,12 +488,12 @@ const FindjobSearch = () => {
 
                     <Button
                       sx={{
-                        backgroundColor: "#00c853",
+                        backgroundColor: "black",
                         color: "white",
                         width: "7rem",
                         borderRadius: "5rem",
                         "&:hover": {
-                          backgroundColor: "#00e676",
+                          backgroundColor: "black",
                         },
                       }}
                       onClick={() => handleDetails(job._id)}

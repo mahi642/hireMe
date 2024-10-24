@@ -27,6 +27,7 @@ import PageNotFound from "./pages/PageNotFound"
 import ShowJobDetails from "./pages/ShowJobDetails";
 import AppliedUsers from "./pages/AppliedUsers";
 import CompanyProfile from "./pages/CompanyProfile";
+import CompanyDashboard from "./pages/CompanyDashboard";
 
 
 function App() {
@@ -49,7 +50,7 @@ function App() {
             <Route path = "/company/profile" element={<CompanyProfile/>}/>
             <Route path="/company/home" element={<CompanyHome/>}/>
             <Route path ="/adminLogin" element ={<AdminLogin/>}/>
-            <Route path = "/adminhome" element = {<AdminHome/>}/>
+            <Route path = "/admin/home" element = {<AdminHome/>}/>
             <Route path = "/admin/users" element = {<UserDetails/>}/>
             <Route path = "/user/profile" element ={<UserProfileForm/>}/>
             <Route path="/user/job/:jobId" element ={<Job/>}/>
@@ -60,6 +61,8 @@ function App() {
             <Route path = "/company/currentjobs" element={<CurrentJobs/>}/>
             <Route path = "/company/job/:jobId" element = {<ShowJobDetails/>}/>
             <Route path = "/company/applications/:jobId" element={<AppliedUsers/>}/>
+            <Route path = "/company/dashboard" element={<CompanyDashboard/>}/>
+            
 
 
 
