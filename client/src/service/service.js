@@ -532,6 +532,59 @@ const getCompanyDetailsService = async () => {
   }
 };
 
+const UserDetailsForCompanyService = async () => {
+  try {
+    const token = localStorage.getItem("auth-token");
+    const url = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/company/companyUserdetails`;
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": token,
+      },
+    });
+
+    if (!response.ok) {
+      console.log("error in getting reposne for service in gettting users");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("error in getting user for comapny in service");
+    throw error;
+  }
+};
+
+const getDashboardDataService = async () => {
+  try {
+    const token = localStorage.getItem("auth-token");
+    const url = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/company/dashboarddata`;
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": token,
+      },
+    });
+
+    if (!response.ok) {
+      console.log("error in getting reposne for service in gettting users");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("Error in getting dashboard data in service");
+    throw error;
+
+  }
+};
+
 export {
   adminLoginService,
   getUserDetailsService,
@@ -551,4 +604,6 @@ export {
   updateUserProfileService,
   getJobApplicationsService,
   getCompanyDetailsService,
+  UserDetailsForCompanyService,
+  getDashboardDataService,
 };

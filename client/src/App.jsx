@@ -28,6 +28,7 @@ import ShowJobDetails from "./pages/ShowJobDetails";
 import AppliedUsers from "./pages/AppliedUsers";
 import CompanyProfile from "./pages/CompanyProfile";
 import CompanyDashboard from "./pages/CompanyDashboard";
+import UserDetailsForCompany from "./pages/UserDetailsForCompany";
 
 
 function App() {
@@ -62,6 +63,7 @@ function App() {
             <Route path = "/company/job/:jobId" element = {<ShowJobDetails/>}/>
             <Route path = "/company/applications/:jobId" element={<AppliedUsers/>}/>
             <Route path = "/company/dashboard" element={<CompanyDashboard/>}/>
+            <Route path ="/company/users" element={<UserDetailsForCompany/>}/>
             
 
 

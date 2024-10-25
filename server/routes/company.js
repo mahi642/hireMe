@@ -8,6 +8,10 @@ router.get("/companydetails",fetchUser,companyController.getdetails)
 router.get("/currentjobs",fetchUser,companyController.getCurrentjobs);
 router.get("/previousjobs",fetchUser,companyController.getPreviousJobs);
 router.get("/applications/:jobId",fetchUser,companyController.getApplications);
+router.get("/companyUserdetails",fetchUser,companyController.getUsersforCompany);
+router.get("/dashboarddata",fetchUser,companyController.getDashboardData);
+
+
 
 
 

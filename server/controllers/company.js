@@ -215,5 +215,116 @@ module.exports.getApplications = async (req, res) => {
 };
 
 
+module.exports.getUsersforCompany = async (req, res) => {
+  try {
+    const companyId = req.user.id;
+
+    // Find the company based on the role and companyId
+    const companyUser = await User.findOne({ role: "company", _id: companyId });
+    if (!companyUser) {
+      return res.status(400).json({ message: "Company not found" });
+    }
+
+    // Fetch jobs posted by the company from the Job model
+    const jobs = await Job.find({ company: companyId }); // assuming "company" field references the companyId in Job model
+    let appliedUserIds = [];
+
+    console.log("jobs are", jobs);
+
+    // Extract user IDs from applied field of each job
+    jobs.forEach((job) => {
+      if (job.applied && Array.isArray(job.applied)) {
+        appliedUserIds = [...appliedUserIds, ...job.applied.map((a) => a.user)]; // assuming 'applied' contains user references
+      }
+    });
+
+    console.log("applied user ids", appliedUserIds);
+
+    if (appliedUserIds.length === 0) {
+      return res.status(404).json({ message: "No applied users found" });
+    }
+
+    // Fetch user details for the applied users
+    const appliedUsers = await User.find({ _id: { $in: appliedUserIds } });
+    console.log("applied users", appliedUsers);
+
+    return res.json({ users: appliedUsers });
+  } catch (error) {
+    console.log("Error in fetching users for company:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports.getDashboardData = async (req, res) => {
+  try {
+    const companyId = req.user.id;
+
+    // Fetch the company user
+    const companyUser = await User.findOne({ role: "company", _id: companyId });
+    if (!companyUser) {
+      return res.status(400).json({ message: "Company not found" });
+    }
+
+    // Fetch all jobs posted by this company
+    const jobs = await Job.find({ company: companyId });
+
+    // Total jobs posted
+    const totalJobs = jobs.length;
+
+    // Active jobs count (deadline is in the future)
+    const activeJobs = jobs.filter(
+      (job) => new Date(job.deadLine) >= new Date()
+    );
+    const activeJobsTotal = activeJobs.length;
+
+    // Expired jobs count (deadline has passed)
+    const expiredJobs = jobs.filter(
+      (job) => new Date(job.deadLine) < new Date()
+    );
+    const expiredJobsTotal = expiredJobs.length;
+
+    // Total applications for all jobs
+    const totalApplications = jobs.reduce(
+      (sum, job) => sum + (job.applied.length || 0),
+      0
+    );
+
+    // Total cost for jobs (extracting numeric part from salary)
+    const totalCost = jobs.reduce((sum, job) => {
+      // Assuming salary is a string like "30000 USD"
+      const salary = parseFloat(job.salary.replace(/[^\d.-]/g, "")) || 0;
+      return sum + salary;
+    }, 0);
+
+    // Get all unique user IDs from applied users
+      const applicantIds = new Set();
+      jobs.forEach((job) => {
+        job.applied.forEach((application) => {
+          if (application.user) {
+            applicantIds.add(application.user.toString());
+          }
+        });
+      });
+      const totalUniqueApplicants = applicantIds.size;
+
+    // Send the result as a JSON response
+    res.status(200).json({
+      totalJobs,
+      activeJobsTotal,
+      expiredJobsTotal,
+      totalApplications,
+      totalCost,
+      totalUniqueApplicants,
+    });
+  } catch (error) {
+    console.log("Error in getting dashboard data in backend:", error);
+    res.status(500).json({ message: "Error fetching dashboard data" });
+  }
+};
+
+
+
+
+
 
 

@@ -2,11 +2,13 @@
 
 .dashboard-container {
   display: flex;
+  margin:"0 auto"
 }
 
 .dashboard-content {
   padding: 2rem;
-  width: 80%;
+  width: 100%;
+  
 }
 
 .dashboard-header {

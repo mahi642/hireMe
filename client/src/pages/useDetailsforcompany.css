@@ -1,0 +1,9 @@
+.user-details-container {
+  margin: 20px;
+  padding: 20px;
+}
+
+.MuiTablePagination-root {
+  display: flex;
+  justify-content: flex-end;
+}

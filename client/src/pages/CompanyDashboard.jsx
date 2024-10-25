@@ -1,31 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CompanyMenubar from "../components/CompanyMenubar";
 import { Grid } from "@mui/joy";
 import { Paper, Typography } from "@mui/material";
-import PeopleIcon from "@mui/icons-material/People";
+import GroupIcon from "@mui/icons-material/Group";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
-import PersonIcon from "@mui/icons-material/Person";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import { Navigate, useNavigate } from "react-router-dom";
-import GroupIcon from "@mui/icons-material/Group";
-
+import { useNavigate } from "react-router-dom";
+import { getDashboardDataService } from "../service/service";
 
 const CompanyDashboard = () => {
   const navigate = useNavigate();
 
-  const handleActiveJobs = () => {
-    navigate("/company/currentjobs");
+  const handleActiveJobs = () => navigate("/company/currentjobs");
+  const handlePreviousJobs = () => navigate("/company/previousjobs");
+  const handleTotalUsers = () => navigate("/company/users");
+
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState(null);
+
+  const fetchData = async () => {
+    try {
+      const result = await getDashboardDataService();
+      if (result) {
+        setData(result);
+      } else {
+        console.log("Error in fetching data from service to component");
+      }
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
-  const handlePreviousJobs =()=>{
-    navigate("/company/previousjobs");
+  console.log("data ", data);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
+
   return (
     <div style={{ display: "flex" }}>
       <CompanyMenubar />
-      <div style={{ padding: "2rem", width: "80%" }}>
+      <div style={{ padding: "2rem", width: "100%" }}>
         <h1 style={{ marginBottom: "2rem" }}>Company Dashboard</h1>
         <div
           style={{
@@ -34,7 +57,7 @@ const CompanyDashboard = () => {
             padding: "1.5rem",
           }}
         >
-          <Grid container spacing={1}>
+          <Grid container spacing={3}>
             {/* Total Users */}
             <Grid xs={12} md={4}>
               <Paper
@@ -59,7 +82,12 @@ const CompanyDashboard = () => {
                   }}
                 >
                   <GroupIcon
-                    sx={{ fontSize: "2.5rem", color: "#1976d2", mb: "0.5rem",borderRadius:"50%" }}
+                    sx={{
+                      fontSize: "2.5rem",
+                      color: "#1976d2",
+                      mb: "0.5rem",
+                      borderRadius: "50%",
+                    }}
                   />
                   <div
                     style={{
@@ -78,7 +106,9 @@ const CompanyDashboard = () => {
                     >
                       Total Users
                     </Typography>
-                    <Typography variant="h6">1,200</Typography>
+                    <Typography variant="h6">
+                      {data.totalUniqueApplicants}
+                    </Typography>
                   </div>
                   <button
                     style={{
@@ -87,6 +117,7 @@ const CompanyDashboard = () => {
                       borderRadius: "0.5rem",
                       color: "white",
                     }}
+                    onClick={handleTotalUsers}
                   >
                     View Details
                   </button>
@@ -137,7 +168,7 @@ const CompanyDashboard = () => {
                     >
                       Total Jobs Posted
                     </Typography>
-                    <Typography variant="h6">245</Typography>
+                    <Typography variant="h6">{data.totalJobs}</Typography>
                   </div>
                   <button
                     style={{
@@ -196,7 +227,7 @@ const CompanyDashboard = () => {
                     >
                       Active Jobs
                     </Typography>
-                    <Typography variant="h6">98</Typography>
+                    <Typography variant="h6">{data.activeJobsTotal}</Typography>
                   </div>
                   <button
                     style={{
@@ -256,7 +287,9 @@ const CompanyDashboard = () => {
                     >
                       Expired Jobs
                     </Typography>
-                    <Typography variant="h6">30</Typography>
+                    <Typography variant="h6">
+                      {data.expiredJobsTotal}
+                    </Typography>
                   </div>
                   <button
                     style={{
@@ -265,8 +298,7 @@ const CompanyDashboard = () => {
                       borderRadius: "0.5rem",
                       color: "white",
                     }}
-
-                    onClick = {handlePreviousJobs}
+                    onClick={handlePreviousJobs}
                   >
                     View Details
                   </button>
@@ -317,7 +349,9 @@ const CompanyDashboard = () => {
                     >
                       Total Applications
                     </Typography>
-                    <Typography variant="h6">1,820</Typography>
+                    <Typography variant="h6">
+                      {data.totalApplications}
+                    </Typography>
                   </div>
                   <button
                     style={{
@@ -356,7 +390,7 @@ const CompanyDashboard = () => {
                     alignItems: "center",
                   }}
                 >
-                  <PersonIcon
+                  <MonetizationOnIcon
                     sx={{ fontSize: "3rem", color: "#1976d2", mb: "0.5rem" }}
                   />
                   <div
@@ -364,19 +398,22 @@ const CompanyDashboard = () => {
                       display: "flex",
                       justifyContent: "space-around",
                       width: "100%",
-                      marginBottom: "0.5rem",
+                      marginBottom: "0.7rem",
+                      alignItems:"center"
                     }}
                   >
                     <Typography
                       sx={{
                         fontWeight: "bold",
-                        fontSize: "1.25rem",
+                        fontSize: "1.1rem",
                         color: "#333",
                       }}
                     >
-                      Shortlisted
+                      Total cost to jobs
                     </Typography>
-                    <Typography variant="h6">75</Typography>
+                    <Typography variant="h6" sx={{
+                      fontSize:"1.1rem"
+                    }}>{data.totalCost}</Typography>
                   </div>
                   <button
                     style={{
