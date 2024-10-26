@@ -290,11 +290,14 @@ module.exports.getDashboardData = async (req, res) => {
     );
 
     // Total cost for jobs (extracting numeric part from salary)
-    const totalCost = jobs.reduce((sum, job) => {
-      // Assuming salary is a string like "30000 USD"
-      const salary = parseFloat(job.salary.replace(/[^\d.-]/g, "")) || 0;
-      return sum + salary;
-    }, 0);
+   const totalCost = jobs.reduce((sum, job) => {
+     // Parse salary and remove any non-numeric characters
+     const salary = parseFloat(job.salary.replace(/[^\d.-]/g, "")) || 0;
+     // Multiply by the number of openings (default to 1 if not provided)
+     const openings = job.numberOfOpenings || 1;
+     return sum + salary * openings;
+   }, 0);
+
 
     // Get all unique user IDs from applied users
       const applicantIds = new Set();
@@ -321,6 +324,51 @@ module.exports.getDashboardData = async (req, res) => {
     res.status(500).json({ message: "Error fetching dashboard data" });
   }
 };
+
+module.exports.getTotalCost = async (req, res) => {
+  try {
+    const companyId = req.user.id;
+    const company = await User.findById(companyId);
+    const jobs = await Job.find({ company: companyId });
+
+    if (!jobs || jobs.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No jobs found for this company" });
+    }
+
+    // Calculate total cost and format job details
+    const jobDetails = jobs.map((job) => {
+      const salary = parseFloat(job.salary.replace(/[^\d.-]/g, "")) || 0;
+      const totalSalaryForJob = salary * (job.numberOfOpenings || 1); // Default to 1 if numberOfOpenings is undefined
+
+      return {
+        jobRole: job.jobRole,
+        jobType: job.jobType,
+        numberOfOpenings: job.numberOfOpenings,
+        salary: job.salary,
+        totalSalaryForJob,
+      };
+    });
+
+    // Sum total cost
+    const totalCost = jobDetails.reduce(
+      (sum, job) => sum + job.totalSalaryForJob,
+      0
+    );
+
+    return res.status(200).json({
+      totalCost: totalCost,
+      jobs: jobDetails,
+    });
+  } catch (error) {
+    console.log("Error in getting total cost in backend:", error);
+    res
+      .status(500)
+      .json({ message: "Server error while calculating total cost" });
+  }
+};
+
 
 
 

@@ -41,9 +41,17 @@ const CompanyDashboard = () => {
     fetchData();
   }, []);
 
+  const handleTotalCost = (e) => {
+    e.preventDefault();
+    navigate("/company/dashboard/costs");
+  };
+
+
   if (loading) {
     return <div>Loading...</div>;
   }
+
+  
 
   return (
     <div style={{ display: "flex" }}>
@@ -57,7 +65,7 @@ const CompanyDashboard = () => {
             padding: "1.5rem",
           }}
         >
-          <Grid container spacing={3}>
+          <Grid container spacing={1}>
             {/* Total Users */}
             <Grid xs={12} md={4}>
               <Paper
@@ -399,7 +407,7 @@ const CompanyDashboard = () => {
                       justifyContent: "space-around",
                       width: "100%",
                       marginBottom: "0.7rem",
-                      alignItems:"center"
+                      alignItems: "center",
                     }}
                   >
                     <Typography
@@ -411,9 +419,14 @@ const CompanyDashboard = () => {
                     >
                       Total cost to jobs
                     </Typography>
-                    <Typography variant="h6" sx={{
-                      fontSize:"1.1rem"
-                    }}>{data.totalCost}</Typography>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontSize: "1.1rem",
+                      }}
+                    >
+                      {data.totalCost}
+                    </Typography>
                   </div>
                   <button
                     style={{
@@ -422,6 +435,7 @@ const CompanyDashboard = () => {
                       borderRadius: "0.5rem",
                       color: "white",
                     }}
+                    onClick={handleTotalCost}
                   >
                     View Details
                   </button>

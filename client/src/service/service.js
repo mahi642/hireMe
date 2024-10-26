@@ -351,6 +351,7 @@ const getBookmarkJobsService = async () => {
     }
 
     const data = await response.json();
+    console.log("bookmarks",data)
     return data;
   } catch (error) {
     console.log("Error in getting bookmark jobs in service");
@@ -387,6 +388,35 @@ const bookmarkJobService = async (jobId) => {
     return null; // Return null in case of error to handle it properly
   }
 };
+
+// remove bookmark service
+
+const removeBookmarkJobService = async (jobId) => {
+  try {
+    const token = localStorage.getItem("auth-token");
+    const url = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/user/removebookmark/${jobId}`;
+
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": token,
+      },
+    })
+
+    if(!response.ok){
+      console.log("Error in response for removing the job bookmark")
+    }
+    const data = response.json();
+    return data;
+
+  
+  } catch (e) {
+    console.log("error in removing the bookmark in the service",e);
+  }
+}
 
 const getCurrentJobsService = async () => {
   try {
@@ -581,7 +611,33 @@ const getDashboardDataService = async () => {
   } catch (error) {
     console.log("Error in getting dashboard data in service");
     throw error;
+  }
+};
 
+const getTotalCostService = async () => {
+  try {
+    const token = localStorage.getItem("auth-token");
+    const url = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/company/totalcosttojob`;
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": token,
+      },
+    });
+
+    if (!response.ok) {
+      console.log(
+        "error in getting resposne from backend for total cost to job in service"
+      );
+    }
+    const data = response.json();
+    return data;
+  } catch (e) {
+    console.log("Error in getting total cost in service", e);
   }
 };
 
@@ -599,6 +655,7 @@ export {
   getAppliedJobsServive,
   getBookmarkJobsService,
   bookmarkJobService,
+  removeBookmarkJobService,
   getCurrentJobsService,
   getPreviousJobsService,
   updateUserProfileService,
@@ -606,4 +663,5 @@ export {
   getCompanyDetailsService,
   UserDetailsForCompanyService,
   getDashboardDataService,
+  getTotalCostService,
 };

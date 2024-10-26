@@ -182,6 +182,35 @@ module.exports.bookmarkJob = async (req, res) => {
 };
 
 
+module.exports.removeBookmark = async (req, res) => {
+  try {
+    const jobId = req.params.jobId;
+    const userId = req.user.id;
+
+    // Use $pull with a condition to match the job field in the bookmarkedJobs array
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { bookmarkedJobs: { job: jobId } } }, // Adjusted to pull based on the job field
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({
+      message: "Bookmark removed successfully",
+      bookmarkedJobs: user.bookmarkedJobs,
+    });
+  } catch (error) {
+    console.error("Error in removing bookmark in backend", error);
+    res.status(500).json({ message: "Failed to remove bookmark" });
+  }
+};
+
+
+
+
 
 
 // module.exports.getAlljobs = async (req, res) => {

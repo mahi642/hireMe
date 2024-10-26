@@ -9,6 +9,7 @@ const upload = require("../middlewares/upload");
 router.get("/apply/:jobId",fetchUser,userController.applyJob);
 router.get("/appliedJobs/",fetchUser,userController.appliedJobs);
 router.get("/bookmarkJob/:jobId",fetchUser,userController.bookmarkJob);
+router.delete("/removebookmark/:jobId",fetchUser,userController.removeBookmark);
 router.get("/alljobs",userController.getAlljobs);
 router.get("/getJobDetailsById/:jobId",userController.getJobById);
 router.get("/jobdata/:jobId", userController.getJobdata);
