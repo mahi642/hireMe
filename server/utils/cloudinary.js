@@ -12,7 +12,7 @@ cloudinary.api.resources({ type: "upload" }, (error, result) => {
   if (error) {
     console.error("Error fetching resources:", error);
   } else {
-    console.log("Uploaded files:", result.resources);
+    // console.log("Uploaded files:", result.resources);
   }
 });
 

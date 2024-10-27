@@ -30,6 +30,9 @@ import CompanyProfile from "./pages/CompanyProfile";
 import CompanyDashboard from "./pages/CompanyDashboard";
 import UserDetailsForCompany from "./pages/UserDetailsForCompany";
 import TotalCostToJob from "./pages/TotalCostToJob";
+import CompanyBookmarks from "./pages/CompanyBookmarks";
+import CompanyDetails from "./pages/CompanyDetails";
+
 
 function App() {
 
@@ -53,6 +56,7 @@ function App() {
             <Route path ="/adminLogin" element ={<AdminLogin/>}/>
             <Route path = "/admin/home" element = {<AdminHome/>}/>
             <Route path = "/admin/users" element = {<UserDetails/>}/>
+            <Route path = "/admin/companies" element = {<CompanyDetails/>}/>
             <Route path = "/user/profile" element ={<UserProfileForm/>}/>
             <Route path="/user/job/:jobId" element ={<Job/>}/>
             <Route path="/user/home" element ={<Profile/>}/>
@@ -65,6 +69,8 @@ function App() {
             <Route path = "/company/dashboard" element={<CompanyDashboard/>}/>
             <Route path ="/company/users" element={<UserDetailsForCompany/>}/>
             <Route path = "/company/dashboard/costs" element={<TotalCostToJob/>}/>
+            <Route path = "/company/bookmarks" element = {<CompanyBookmarks/>}/>
+            
             <Route path = "*" element={<PageNotFound/>}/>
             
 

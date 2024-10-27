@@ -159,12 +159,14 @@ module.exports.adminLogin = async (req, res) => {
       password.trim() === process.env.ADMIN_PASSWORD.trim()
     ) {
       // Create the payload for the token
-      const data = {
-        email: email,
-      };
+     const data = {
+       user: {
+         email: email,
+       },
+     };
 
       // Sign the JWT token
-      const authToken = JWT.sign(data, process.env.JWT_SECRET, { expiresIn: "1h" }); // Adding an expiry for better security
+      const authToken = JWT.sign(data, process.env.JWT_SECRET, { expiresIn: "7d" }); // Adding an expiry for better security
 
       // Return success response
       return res.status(200).json({

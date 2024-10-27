@@ -208,12 +208,10 @@ const sendJobDetailsService = async (formData) => {
 const getJobandCompanyDetailsService = async (jobId) => {
   try {
     const token = localStorage.getItem("auth-token");
-    const url1 = `${
-      import.meta.env.VITE_API_BASE_URL
-    }/api/company/companydetails`;
-    const url2 = `${
-      import.meta.env.VITE_API_BASE_URL
-    }/api/user/getJobDetailsById/${jobId}`;
+    const url1 = `${import.meta.env.VITE_API_BASE_URL
+      }/api/company/companydetails`;
+    const url2 = `${import.meta.env.VITE_API_BASE_URL
+      }/api/user/getJobDetailsById/${jobId}`;
 
     // Fetch company details
     const companyResponse = await fetch(url1, {
@@ -262,9 +260,8 @@ const getJobandCompanyDetailsService = async (jobId) => {
 
 const jobDetailsService = async (jobId) => {
   try {
-    const url = `${
-      import.meta.env.VITE_API_BASE_URL
-    }/api/user/jobdata/${jobId}`;
+    const url = `${import.meta.env.VITE_API_BASE_URL
+      }/api/user/jobdata/${jobId}`;
 
     const res = await fetch(url, {
       method: "GET",
@@ -351,7 +348,7 @@ const getBookmarkJobsService = async () => {
     }
 
     const data = await response.json();
-    console.log("bookmarks",data)
+    console.log("bookmarks", data)
     return data;
   } catch (error) {
     console.log("Error in getting bookmark jobs in service");
@@ -361,9 +358,8 @@ const getBookmarkJobsService = async () => {
 const bookmarkJobService = async (jobId) => {
   try {
     const token = localStorage.getItem("auth-token");
-    const url = `${
-      import.meta.env.VITE_API_BASE_URL
-    }/api/user/bookmarkJob/${jobId}`;
+    const url = `${import.meta.env.VITE_API_BASE_URL
+      }/api/user/bookmarkJob/${jobId}`;
 
     // Await the fetch call to wait for the response
     const response = await fetch(url, {
@@ -394,9 +390,8 @@ const bookmarkJobService = async (jobId) => {
 const removeBookmarkJobService = async (jobId) => {
   try {
     const token = localStorage.getItem("auth-token");
-    const url = `${
-      import.meta.env.VITE_API_BASE_URL
-    }/api/user/removebookmark/${jobId}`;
+    const url = `${import.meta.env.VITE_API_BASE_URL
+      }/api/user/removebookmark/${jobId}`;
 
     const response = await fetch(url, {
       method: "DELETE",
@@ -406,15 +401,15 @@ const removeBookmarkJobService = async (jobId) => {
       },
     })
 
-    if(!response.ok){
+    if (!response.ok) {
       console.log("Error in response for removing the job bookmark")
     }
     const data = response.json();
     return data;
 
-  
+
   } catch (e) {
-    console.log("error in removing the bookmark in the service",e);
+    console.log("error in removing the bookmark in the service", e);
   }
 }
 
@@ -498,9 +493,8 @@ const updateUserProfileService = async (formData) => {
 const getJobApplicationsService = async (jobId) => {
   try {
     const token = localStorage.getItem("auth-token");
-    const url = `${
-      import.meta.env.VITE_API_BASE_URL
-    }/api/company/applications/${jobId}`;
+    const url = `${import.meta.env.VITE_API_BASE_URL
+      }/api/company/applications/${jobId}`;
 
     const response = await fetch(url, {
       method: "GET",
@@ -529,9 +523,8 @@ const getJobApplicationsService = async (jobId) => {
 const getCompanyDetailsService = async () => {
   try {
     const token = localStorage.getItem("auth-token");
-    const url = `${
-      import.meta.env.VITE_API_BASE_URL
-    }/api/company/companydetails`;
+    const url = `${import.meta.env.VITE_API_BASE_URL
+      }/api/company/companydetails`;
 
     const response = await fetch(url, {
       method: "GET", // Corrected here
@@ -565,9 +558,8 @@ const getCompanyDetailsService = async () => {
 const UserDetailsForCompanyService = async () => {
   try {
     const token = localStorage.getItem("auth-token");
-    const url = `${
-      import.meta.env.VITE_API_BASE_URL
-    }/api/company/companyUserdetails`;
+    const url = `${import.meta.env.VITE_API_BASE_URL
+      }/api/company/companyUserdetails`;
 
     const response = await fetch(url, {
       method: "GET",
@@ -591,9 +583,8 @@ const UserDetailsForCompanyService = async () => {
 const getDashboardDataService = async () => {
   try {
     const token = localStorage.getItem("auth-token");
-    const url = `${
-      import.meta.env.VITE_API_BASE_URL
-    }/api/company/dashboarddata`;
+    const url = `${import.meta.env.VITE_API_BASE_URL
+      }/api/company/dashboarddata`;
 
     const response = await fetch(url, {
       method: "GET",
@@ -617,9 +608,8 @@ const getDashboardDataService = async () => {
 const getTotalCostService = async () => {
   try {
     const token = localStorage.getItem("auth-token");
-    const url = `${
-      import.meta.env.VITE_API_BASE_URL
-    }/api/company/totalcosttojob`;
+    const url = `${import.meta.env.VITE_API_BASE_URL
+      }/api/company/totalcosttojob`;
 
     const response = await fetch(url, {
       method: "GET",
@@ -641,27 +631,83 @@ const getTotalCostService = async () => {
   }
 };
 
-export {
-  adminLoginService,
-  getUserDetailsService,
-  userRegisterService,
-  userLoginService,
-  getAllJobs,
-  getJobDetailsService,
-  sendJobDetailsService,
-  getJobandCompanyDetailsService,
-  jobDetailsService,
-  applyJobService,
-  getAppliedJobsServive,
-  getBookmarkJobsService,
-  bookmarkJobService,
-  removeBookmarkJobService,
-  getCurrentJobsService,
-  getPreviousJobsService,
-  updateUserProfileService,
-  getJobApplicationsService,
-  getCompanyDetailsService,
-  UserDetailsForCompanyService,
-  getDashboardDataService,
-  getTotalCostService,
-};
+//admin services
+
+
+const getUsersForAdminService = async () => {
+  try {
+    const token = localStorage.getItem("auth-token");
+    const url = `${import.meta.env.VITE_API_BASE_URL}/api/admin/getUsers`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": token,
+      }
+    })
+    if (!response.ok) {
+      console.log("error in getting response from backend for users in service")
+    }
+    const data = await response.json();
+    return data;
+
+  }
+  catch (e) {
+    console.log("Error in getting users for admin in service", e);
+  }
+}
+
+const getCompaniesForAdminService = async () => {
+  try {
+    const token = localStorage.getItem("auth-token");
+    const url = `${import.meta.env.VITE_API_BASE_URL}/api/admin/getCompanies`
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": token,
+      }
+    })
+    if (!response.ok) {
+      console.log("error in getting response from backend for companies in service")
+    }
+    const data = await response.json();
+    return data;
+
+
+
+  }
+  catch (e) {
+    console.log("Error in getting companies for admin in service", e);
+  }
+}
+
+
+
+  export {
+    adminLoginService,
+    getUserDetailsService,
+    userRegisterService,
+    userLoginService,
+    getAllJobs,
+    getJobDetailsService,
+    sendJobDetailsService,
+    getJobandCompanyDetailsService,
+    jobDetailsService,
+    applyJobService,
+    getAppliedJobsServive,
+    getBookmarkJobsService,
+    bookmarkJobService,
+    removeBookmarkJobService,
+    getCurrentJobsService,
+    getPreviousJobsService,
+    updateUserProfileService,
+    getJobApplicationsService,
+    getCompanyDetailsService,
+    UserDetailsForCompanyService,
+    getDashboardDataService,
+    getTotalCostService,
+    getCompaniesForAdminService,
+    getUsersForAdminService
+  }
+

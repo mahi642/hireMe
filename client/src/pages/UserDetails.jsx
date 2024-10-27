@@ -1,121 +1,139 @@
-import React from "react";
-import "./UserDetails.css"; // Ensure your CSS file is properly styled
+import React, { useEffect, useState } from "react";
+import "./UserDetails.css";
 import AdminMenubar from "../components/AdminMenubar";
-import PaginationTable from "../components/PaginationTable";
+import { getUsersForAdminService } from "../service/service";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TablePagination,
+  Paper,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 
 const UserDetails = () => {
-  const dummyUserDetails = [
-    {
-      name: "John Doe",
-      email: "john.doe@example.com",
-      phoneNumber: "123-456-7890",
-      age: 30,
-      gender: "Male",
-      currentPosition: "Software Engineer",
-    },
-    {
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      phoneNumber: "987-654-3210",
-      age: 28,
-      gender: "Female",
-      currentPosition: "Project Manager",
-    },
-    {
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      phoneNumber: "987-654-3210",
-      age: 28,
-      gender: "Female",
-      currentPosition: "Project Manager",
-    },
-    {
-      name: "Alice Johnson",
-      email: "alice.johnson@example.com",
-      phoneNumber: "456-789-1234",
-      age: 35,
-      gender: "Female",
-      currentPosition: "UI/UX Designer",
-    },
-    {
-      name: "Bob Brown",
-      email: "bob.brown@example.com",
-      phoneNumber: "789-123-4567",
-      age: 40,
-      gender: "Male",
-      currentPosition: "DevOps Engineer",
-    },
-    {
-      name: "Alice Johnson",
-      email: "alice.johnson@example.com",
-      phoneNumber: "456-789-1234",
-      age: 35,
-      gender: "Female",
-      currentPosition: "UI/UX Designer",
-    },
-    {
-      name: "Bob Brown",
-      email: "bob.brown@example.com",
-      phoneNumber: "789-123-4567",
-      age: 40,
-      gender: "Male",
-      currentPosition: "DevOps Engineer",
-    },
-    {
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      phoneNumber: "987-654-3210",
-      age: 28,
-      gender: "Female",
-      currentPosition: "Project Manager",
-    },
-    {
-      name: "Alice Johnson",
-      email: "alice.johnson@example.com",
-      phoneNumber: "456-789-1234",
-      age: 35,
-      gender: "Female",
-      currentPosition: "UI/UX Designer",
-    },
-    {
-      name: "Bob Brown",
-      email: "bob.brown@example.com",
-      phoneNumber: "789-123-4567",
-      age: 40,
-      gender: "Male",
-      currentPosition: "DevOps Engineer",
-    },
-    {
-      name: "Charlie White",
-      email: "charlie.white@example.com",
-      phoneNumber: "321-654-9870",
-      age: 45,
-      gender: "Male",
-      currentPosition: "Data Scientist",
-    },
-    {
-      name: "Daisy Green",
-      email: "daisy.green@example.com",
-      phoneNumber: "654-321-0987",
-      age: 32,
-      gender: "Female",
-      currentPosition: "Marketing Specialist",
-    },
-    {
-      name: "Eve Black",
-      email: "eve.black@example.com",
-      phoneNumber: "987-123-4560",
-      age: 29,
-      gender: "Female",
-      currentPosition: "Content Writer",
-    },
-  ];
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const fetchData = async () => {
+    try {
+      const response = await getUsersForAdminService();
+      if (response ) {
+        setData(response);
+      } else {
+        console.error("Unexpected data format:", response);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   return (
     <div style={{ display: "flex" }}>
       <AdminMenubar />
-      <div className="user-details-container">
-        <PaginationTable users={dummyUserDetails} />
+      <div
+        className="user-details-container"
+        style={{ width: "100%", padding: "0.2rem" }}
+      >
+        <Typography variant="h5" gutterBottom>
+          User Details
+        </Typography>
+        {loading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress />
+          </div>
+        ) : (
+          <div
+            style={{
+              width: "100%",
+              border: "1px solid white",
+              padding: "2rem",
+              borderRadius:"1rem"
+            }}
+          >
+            <Paper elevation={3} style={{ width: "100%", padding: "5px" }}>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>
+                        <strong>Name</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Email</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Number of Jobs Applied</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Experience</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Location</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Highest Education</strong>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((user) => (
+                        <TableRow key={user._id || user.id}>
+                          <TableCell>{user.name}</TableCell>
+                          <TableCell>{user.email}</TableCell>
+                          <TableCell>{user.jobs?.length || 0}</TableCell>
+                          <TableCell>{user.experience}</TableCell>
+                          <TableCell>{user.location}</TableCell>
+                          <TableCell>{user.highestEducation}</TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 15]}
+                component="div"
+                count={data.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Paper>
+          </div>
+        )}
       </div>
     </div>
   );

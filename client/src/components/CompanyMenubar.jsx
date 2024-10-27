@@ -31,7 +31,7 @@ const CompanyMenubar = () => {
   }
 
   const handleBookmarkJobs =()=>{
-    navigate("/compnay/bookmarks")
+    navigate("/company/bookmarks")
   }
 
   const handleProfile =()=>{
