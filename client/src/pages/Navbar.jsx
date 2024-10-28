@@ -19,8 +19,18 @@ function Navbar() {
             alignItems: "center",
           }}
         >
-          <h1>HireMe</h1>
-          <p>logo</p>
+          <img
+            src={"/hireMe_logo.png"}
+            height="50px"
+            alt="logo"
+            style={{
+              // mixBlendMode: "multiply", // Remove or comment this line
+              borderRadius: "0.5rem",
+              boxShadow: "0px 10px 2px rgba(0, 0, 0, 0.8)",
+              padding: "1px",
+              opacity: 1, // Set to 1 for full visibility
+            }}
+          />
         </div>
 
         <div

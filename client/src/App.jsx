@@ -32,55 +32,73 @@ import UserDetailsForCompany from "./pages/UserDetailsForCompany";
 import TotalCostToJob from "./pages/TotalCostToJob";
 import CompanyBookmarks from "./pages/CompanyBookmarks";
 import CompanyDetails from "./pages/CompanyDetails";
+import AdminDashboard from "./pages/AdminDashboard";
+import HandleJobs from "./pages/handleJobs";
 
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+
+const client = new ApolloClient({
+  uri: "http://localhost:4000/graphql", // Replace with your GraphQL server URL
+  cache: new InMemoryCache(),
+});
 
 function App() {
 
   return (
-    <div className="app-container">
-     
+    <ApolloProvider client={client}>
+      <div className="app-container">
+        <Router>
+          <Navbar />
+          <div className="content">
+            <Routes>
+              <Route path="/" element={<Homepage />} />
+              <Route path="/about" element={<Aboutus />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/jobSearch" element={<FindjobSearch />} />
+              <Route path="/postjob" element={<PostaJob />} />
+              <Route
+                path="/company/profileform"
+                element={<CompanyProfileForm />}
+              />
+              <Route path="/company/profile" element={<CompanyProfile />} />
+              <Route path="/company/home" element={<CompanyHome />} />
+              <Route path="/adminLogin" element={<AdminLogin />} />
+              <Route path="/admin/home" element={<AdminHome />} />
+              <Route path="/admin/users" element={<UserDetails />} />
+              <Route path="/admin/companies" element={<CompanyDetails />} />
+              <Route path="/user/profile" element={<UserProfileForm />} />
+              <Route path="/user/job/:jobId" element={<Job />} />
+              <Route path="/user/home" element={<Profile />} />
+              <Route path="/user/bookmarks" element={<UserBookmarks />} />
+              <Route path="/profile" element={<UserProfile />} />
+              <Route path="/company/previousjobs" element={<PreviousJobs />} />
+              <Route path="/company/currentjobs" element={<CurrentJobs />} />
+              <Route path="/company/job/:jobId" element={<ShowJobDetails />} />
+              <Route
+                path="/company/applications/:jobId"
+                element={<AppliedUsers />}
+              />
+              <Route path="/company/dashboard" element={<CompanyDashboard />} />
+              <Route
+                path="/company/users"
+                element={<UserDetailsForCompany />}
+              />
+              <Route
+                path="/company/dashboard/costs"
+                element={<TotalCostToJob />}
+              />
+              <Route path="/company/bookmarks" element={<CompanyBookmarks />} />
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/jobs" element={<HandleJobs/>}/>
 
-      <Router>
-        <Navbar />
-        <div className="content">
-          <Routes>
-            <Route path="/" element={<Homepage />} />
-            <Route path="/about" element={<Aboutus />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path = "/jobSearch" element ={<FindjobSearch/>}/>
-            <Route path = "/postjob"  element ={<PostaJob/>}/>
-            <Route path = "/company/profileform"  element ={<CompanyProfileForm/>}/>
-            <Route path = "/company/profile" element={<CompanyProfile/>}/>
-            <Route path="/company/home" element={<CompanyHome/>}/>
-            <Route path ="/adminLogin" element ={<AdminLogin/>}/>
-            <Route path = "/admin/home" element = {<AdminHome/>}/>
-            <Route path = "/admin/users" element = {<UserDetails/>}/>
-            <Route path = "/admin/companies" element = {<CompanyDetails/>}/>
-            <Route path = "/user/profile" element ={<UserProfileForm/>}/>
-            <Route path="/user/job/:jobId" element ={<Job/>}/>
-            <Route path="/user/home" element ={<Profile/>}/>
-            <Route path ="/user/bookmarks" element = {<UserBookmarks/>}/>
-            <Route path = "/profile" element ={<UserProfile/>}/>
-            <Route path = "/company/previousjobs" element={<PreviousJobs/>}/>
-            <Route path = "/company/currentjobs" element={<CurrentJobs/>}/>
-            <Route path = "/company/job/:jobId" element = {<ShowJobDetails/>}/>
-            <Route path = "/company/applications/:jobId" element={<AppliedUsers/>}/>
-            <Route path = "/company/dashboard" element={<CompanyDashboard/>}/>
-            <Route path ="/company/users" element={<UserDetailsForCompany/>}/>
-            <Route path = "/company/dashboard/costs" element={<TotalCostToJob/>}/>
-            <Route path = "/company/bookmarks" element = {<CompanyBookmarks/>}/>
-            
-            <Route path = "*" element={<PageNotFound/>}/>
-            
-
-            
-
-          </Routes>
-        </div>
-        <Footer />
-      </Router>
-    </div>
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </div>
+          <Footer />
+        </Router>
+      </div>
+    </ApolloProvider>
   );
 }
 

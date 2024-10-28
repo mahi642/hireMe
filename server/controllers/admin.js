@@ -36,3 +36,19 @@ module.exports.getCompanies = async(req,res)=>{
     res.status(500).json({ message: "Error in getting deatials of companies"});
   }
 }
+
+module.exports.getDashboardData =async(req,res)=>{
+  try {
+
+    const users = await User.find();
+    re.send(200).json({
+      userCount:users.length,
+    })
+
+    
+  } catch (error) {
+    console.log("Error in getting dashboard data at backend",error)
+    
+  }
+
+}

@@ -75,11 +75,16 @@ const UserDetails = () => {
               width: "100%",
               border: "1px solid white",
               padding: "2rem",
-              borderRadius:"1rem"
+              borderRadius: "1rem",
             }}
           >
             <Paper elevation={3} style={{ width: "100%", padding: "5px" }}>
-              <TableContainer>
+              <TableContainer
+                style={{
+                  maxHeight: "400px", // Set a maximum height for scrolling
+                  overflow: "auto",
+                }}
+              >
                 <Table>
                   <TableHead>
                     <TableRow>

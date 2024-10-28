@@ -1,7 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors")
-require("dotenv").config(); // Load environment variables from .env
+require("dotenv").config(); // Load environment variables from .env;
+const { ApolloServer } = require("apollo-server-express");
+const typeDefs = require("./graphql/schemas");
+const resolvers = require("./graphql/resolvers");
 
 const app = express();
 
@@ -17,7 +20,17 @@ const corsOptions = {
 
 app.use(cors(corsOptions)); // Use CORS middleware
 
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
 
+async function startServer() {
+  await server.start();
+  server.applyMiddleware({ app });
+}
+
+startServer();
 
 
 

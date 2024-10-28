@@ -79,7 +79,12 @@ const CompanyDetails = () => {
               }}
             >
               <Paper elevation={3} style={{ width: "100%", padding: "5px" }}>
-                <TableContainer>
+                <TableContainer
+                  style={{
+                    maxHeight: "400px", // Set a maximum height for scrolling
+                    overflow: "auto",
+                  }}
+                >
                   <Table>
                     <TableHead>
                       <TableRow>
