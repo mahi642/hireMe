@@ -4,6 +4,7 @@ require("dotenv").config();
 
 const fetchuser = ((req,res,next)=>{
   const token = req.header('auth-token');
+  console.log("roken is",token)
   if(!token){
     return res.status(400).json({msg:"token not passed"})
   }

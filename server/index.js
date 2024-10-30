@@ -5,7 +5,7 @@ require("dotenv").config(); // Load environment variables from .env;
 const { ApolloServer } = require("apollo-server-express");
 const typeDefs = require("./graphql/schemas");
 const resolvers = require("./graphql/resolvers");
-
+const swaggerDocs = require("./swagger/swagger");
 const app = express();
 
 
@@ -18,7 +18,7 @@ const corsOptions = {
   credentials: true, // Allow credentials (cookies, authorization headers)
 };
 
-app.use(cors(corsOptions)); // Use CORS middleware
+app.use(cors(corsOptions)); // Use CORS middlewarae
 
 const server = new ApolloServer({
   typeDefs,
@@ -33,7 +33,7 @@ async function startServer() {
 startServer();
 
 
-
+swaggerDocs(app, process.env.PORT || 4000);
 
 
 
