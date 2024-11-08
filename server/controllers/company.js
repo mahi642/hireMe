@@ -1,11 +1,25 @@
 const Job = require("../models/job"); // Import the Job model
 const Company = require("../models/company"); // Import the Company model
-const User = require("../models/user")
+const User = require("../models/user");
+const DOMPurify = require('dompurify'); // Import DOMPurify
+const { JSDOM } = require('jsdom'); // Import JSDOM for server-side DOM
+
+
+const window = new JSDOM('').window;
+const purify = DOMPurify(window);
+
+function cleanJobFields(content) {
+  return purify.sanitize(content, {
+    ALLOWED_TAGS: ['ul', 'li', 'p'],
+  }).replace(/&nbsp;/g, ' '); // Remove &nbsp; entities
+}
+
 module.exports.postjob = async (req, res) => {
   try {
     const companyId = req.user.id; // Assuming the company ID comes from the logged-in user
-    console.log("companyId", companyId);
+    console.log("companyId:", companyId);
 
+    // Find the user and check if they have a "company" role
     const user = await User.findById(companyId);
     if (!user || user.role !== "company") {
       return res
@@ -13,10 +27,10 @@ module.exports.postjob = async (req, res) => {
         .json({ message: "User not found or not a company" });
     }
 
-    const email = user.email; // Get the email from the user
+    const email = user.email; // Get the company's email from the user
     console.log("User email:", email);
 
-    // Destructure the job details from the request body
+    // Destructure job details from the request body
     const {
       jobRole,
       workLocation,
@@ -34,6 +48,10 @@ module.exports.postjob = async (req, res) => {
       deadLine,
     } = req.body;
 
+    // Clean the jobDescription and qualifications fields
+    const cleanedJobDescription = cleanJobFields(jobDescription);
+    const cleanedQualifications = cleanJobFields(qualifications);
+
     // Create a new job object
     const job = new Job({
       jobRole,
@@ -41,12 +59,12 @@ module.exports.postjob = async (req, res) => {
       workMode,
       jobType,
       experience,
-      skills: skills.split(", "), // Convert skills string to array
+      skills: skills ? skills.split(",").map((skill) => skill.trim()) : [], // Convert skills string to array and trim spaces
       salary,
       duration,
-      perks: perks.split(", "), // Convert perks string to array
-      jobDescription,
-      qualifications,
+      perks: perks ? perks.split(",").map((perk) => perk.trim()) : [], // Convert perks string to array and trim spaces
+      jobDescription: cleanedJobDescription,
+      qualifications: cleanedQualifications,
       numberOfOpenings,
       jobstartDate,
       deadLine,
@@ -56,27 +74,28 @@ module.exports.postjob = async (req, res) => {
     // Save the job to the database
     const savedJob = await job.save();
 
-    // Update the company to include the new job reference
+    // Find the company by email and add the job reference
+    const company = await Company.findOneAndUpdate(
+      { email: email },
+      { $push: { jobs: savedJob._id } }, // Push the job ID into the jobs array
+      { new: true } // Return the updated document
+    );
 
-    const company = await Company.findOne({ email: email });
     if (!company) {
       return res.status(404).json({ message: "Company not found" });
     }
 
-    // Update the company to include the new job reference
-    company.jobs.push(savedJob._id); // Push the job ID into the jobs array
-    await company.save(); // Save the updated company document
-
+    // Also update the user document to include the new job reference
     await User.findByIdAndUpdate(
       companyId,
-      { $push: { jobs: savedJob._id } }, // Push the job ID into the jobs array
+      { $push: { jobs: savedJob._id } },
       { new: true } // Return the updated document
     );
 
     // Respond with success
     res.status(201).json({ message: "Job posted successfully", job: savedJob });
   } catch (error) {
-    console.error(error);
+    console.error("Error posting job:", error);
     res.status(500).json({ message: "Error posting job" });
   }
 };

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./AdminMenubar.css"; // Create a separate CSS file for styling
 import { useNavigate } from "react-router-dom";
-
+import LogoutIcon from "@mui/icons-material/Logout";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -22,6 +22,11 @@ const AdminMenubar= () => {
 
   const handleUsers = () => {
     navigate("/admin/users");
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("auth-token");
+    navigate("/");
+    alert("Logout successfully");
   };
 
   const handleCompanies = () => {
@@ -56,10 +61,12 @@ const AdminMenubar= () => {
           <BusinessIcon />
           {navbar && <p className="menu-text">Companies</p>}
         </div>
-      </div>
-      
 
-      
+        <div className="menu-item" onClick={handleLogout}>
+          <LogoutIcon />
+          {navbar && <p className="menu-text"> Logout</p>}
+        </div>
+      </div>
     </div>
   );
 };

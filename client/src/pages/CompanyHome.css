@@ -1,0 +1,74 @@
+.company-home {
+  /* background-color: #111; */
+  color: white;
+  width:"80%"
+
+}
+
+.company-heading {
+  text-align: center;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+}
+
+.company-heading-text {
+  margin: 1rem 0;
+  color: white;
+  font-size: 2rem;
+  font-weight: 800;
+  font-family: 'Roboto';
+}
+
+.company-home-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.company-post-job-btn {
+  padding: 0.5rem 2rem;
+  margin: 6px;
+  background-color: #007bff;
+  color: white;
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+.company-text {
+  text-align: start;
+  font-size: 1.3rem;
+  word-spacing: 4px;
+  font-weight: 900;
+  font-family: 'Cambria', serif;
+}
+
+.company-image {
+  margin-right: 5rem;
+  height: "80%";
+}
+
+/* Animations */
+.animate-img {
+  opacity: 0;
+  transform: scale(0.9);
+  animation: scaleUp 1.2s ease forwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@keyframes scaleUp {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.animate-text {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease forwards;
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}

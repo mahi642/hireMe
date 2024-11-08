@@ -6,7 +6,7 @@ import { Paper } from "@mui/material";
 import { Grid ,Button} from "@mui/joy";
 import { jobDetailsService } from "../service/service";
 import { useNavigate } from "react-router-dom";
-
+import DOMPurify from "dompurify";
 const ShowJobDetails = () => {
   const { jobId } = useParams();
   const [jobDetails, setJobDetails] = useState(null);
@@ -82,7 +82,7 @@ const navigate = useNavigate();
                       elevation={3}
                       sx={{
                         padding: "2rem",
-                        margin: "2rem 0",
+                        margin: " 0",
                       }}
                     >
                       <div>
@@ -94,7 +94,16 @@ const navigate = useNavigate();
                         >
                           Job Description
                         </p>
-                        <p className="job-value">{jobDetails.jobDescription}</p>
+                        <p
+                          style={{}}
+                          className="job-value"
+                          dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(
+                              jobDetails.jobDescription ||
+                                "<p>Description not available</p>"
+                            ),
+                          }}
+                        ></p>
                       </div>
 
                       <div>
@@ -107,7 +116,15 @@ const navigate = useNavigate();
                         >
                           Job Qualification
                         </p>
-                        <p className="job-value">{jobDetails.qualifications}</p>
+                        <p
+                          className="job-value"
+                          dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(
+                              jobDetails.qualifications||
+                                "<p>Description not available</p>"
+                            ),
+                          }}
+                        ></p>
                       </div>
 
                       <div>
@@ -275,11 +292,11 @@ const navigate = useNavigate();
           <div
             style={{
               textAlign: "center",
-              marginTop:"2rem"
+              marginTop: "2rem",
             }}
           >
             <Button
-              onClick ={handleClick}
+              onClick={handleClick}
               sx={{
                 backgroundColor: "#8877ff",
                 color: "black",

@@ -11,7 +11,7 @@
   background-color: rgb(167, 159, 159);
   padding: 0.3rem 1rem;
   border-radius: 0.4rem;
-  text-align: center;
+  /* text-align: center; */
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 .job-skills{

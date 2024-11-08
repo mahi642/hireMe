@@ -12,7 +12,9 @@ import { CiBookmark } from "react-icons/ci";
 import { FcGoogle } from "react-icons/fc";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
-import { bookmarkJobService } from "../service/service";
+import { bookmarkJobService,getBookmarkJobsService } from "../service/service";
+import { FcBookmark } from "react-icons/fc";
+
 const FindjobSearch = () => {
  const [value, setValue] = useState([80, 1000]);
  const [filters, setFilters] = useState({
@@ -35,6 +37,31 @@ const FindjobSearch = () => {
    duration: 0,
    salary: 0,
  });
+
+  const [bookmarkedJobIds, setBookmarkedJobIds] = useState(new Set());
+  const isBookmarked = (jobId) => bookmarkedJobIds.has(jobId);
+  const fetchData = async () => {
+    try {
+      const result = await getBookmarkJobsService();
+
+      if (!result || !Array.isArray(result.jobs)) {
+        console.log("Error in getting result");
+      } else {
+        // Extract job IDs and store them in a Set
+        const jobIds = result.jobs.map((job) => job._id);
+        setBookmarkedJobIds(new Set(jobIds));
+      }
+    } catch (error) {
+      console.error("Error fetching bookmarked jobs:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(); // Call the fetchData function inside useEffect
+  }, []);
+
+  console.log("Bookmarked job IDs:", bookmarkedJobIds);
+  
 
  const navigate = useNavigate();
 
@@ -80,7 +107,7 @@ const FindjobSearch = () => {
  const applyFilters = (jobs) => {
    const filterConditions = {
      fullTime: (job) => job.jobType === "Full-Time",
-     partTime: (job) => job.jobType === "Part Time",
+     partTime: (job) => job.jobType === "Part-Time",
      internship: (job) => job.jobType === "Internship",
      project: (job) => job.jobType === "Project",
      work: (job) => job.jobType === "Work",
@@ -89,6 +116,7 @@ const FindjobSearch = () => {
      flexibleSchedule: (job) => job.employmentType === "Flexible Schedule",
      shiftWork: (job) => job.employmentType === "Shift Work",
      remote: (job) => job.workMode === "Remote",
+     
    };
 
    // Apply filters conditionally
@@ -418,15 +446,29 @@ const FindjobSearch = () => {
                           ? format(new Date(job.createdAt), "dd MMM")
                           : "Date Unavailable"}
                       </p>
-                      <CiBookmark
-                        style={{
-                          fontSize: "30",
-                          marginTop: "1rem",
-                          backgroundColor: "white",
-                          borderRadius: "0.5rem",
-                        }}
-                        onClick={() => handleBookmark(job._id)}
-                      />
+                      {isBookmarked(job._id) ? (
+                        <FcBookmark
+                          style={{
+                            fontSize: "30px",
+                            marginTop: "1rem",
+                            backgroundColor: "white",
+                            borderRadius: "0.5rem",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handleBookmark(job._id)}
+                        />
+                      ) : (
+                        <CiBookmark
+                          style={{
+                            fontSize: "30px",
+                            marginTop: "1rem",
+                            backgroundColor: "white",
+                            borderRadius: "0.5rem",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handleBookmark(job._id)}
+                        />
+                      )}
                     </div>
 
                     <p style={{ fontWeight: 900, margin: "8px 0 0 1rem" }}>

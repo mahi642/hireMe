@@ -7,6 +7,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import WorkIcon from "@mui/icons-material/Work";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import PersonIcon from "@mui/icons-material/Person";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const UserSidebar = () => {
   const [navbar, setNavbar] = useState(true);
@@ -26,6 +27,11 @@ const UserSidebar = () => {
 
   const handleToggle = () => {
     setNavbar(!navbar);
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("auth-token");
+    navigate("/");
+    alert("Logout successfully");
   };
 
   return (
@@ -67,6 +73,10 @@ const UserSidebar = () => {
         <div className="user-menu-item" onClick={handleProfile}>
           <PersonIcon />
           {navbar && <p className="user-menu-text">Profile</p>}
+        </div>
+        <div className="user-menu-item" onClick={handleLogout}>
+          <LogoutIcon />
+          {navbar && <p className="user-menu-text"> Logout</p>}
         </div>
       </div>
     </div>

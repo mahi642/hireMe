@@ -8,7 +8,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import WorkIcon from "@mui/icons-material/Work";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-
+import LogoutIcon from "@mui/icons-material/Logout";
 const CompanyMenubar = () => {
   const [navbar, setNavbar] = useState(true);
   const navigate = useNavigate();
@@ -37,6 +37,11 @@ const CompanyMenubar = () => {
   const handleProfile =()=>{
     navigate("/company/profile")
   }
+  const handleLogout =()=>{
+    localStorage.removeItem("auth-token");
+    navigate("/");
+    alert("Logout successfully")
+  }
 
 
 
@@ -52,6 +57,9 @@ const CompanyMenubar = () => {
           style={{
             display: "flex",
             justifyContent: "space-around",
+          }}
+          onClick={() => {
+            navigate("/company/home");
           }}
         >
           <p className="menu-text">{navbar && "Menu"}</p>
@@ -79,7 +87,7 @@ const CompanyMenubar = () => {
           {navbar && <p className="menu-text">Post Job</p>}
         </div>
 
-        <div className="menu-item" onClick = {handleCurrentJobs}>
+        <div className="menu-item" onClick={handleCurrentJobs}>
           <WorkIcon />
           {navbar && <p className="menu-text">Current Jobs</p>}
         </div>
@@ -88,8 +96,6 @@ const CompanyMenubar = () => {
           <WorkIcon />
           {navbar && <p className="menu-text">Previous Jobs</p>}
         </div>
-
-
 
         {/* Current Jobs Menu Item */}
 
@@ -102,7 +108,11 @@ const CompanyMenubar = () => {
         <div className="menu-item" onClick={handleProfile}>
           <BookmarkIcon />
           {navbar && <p className="menu-text">Profile</p>}
-          </div>
+        </div>
+        <div className="menu-item" onClick={handleLogout}>
+          <LogoutIcon />
+          {navbar && <p className="menu-text"> Logout</p>}
+        </div>
       </div>
     </div>
   );

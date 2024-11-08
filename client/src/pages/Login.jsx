@@ -34,11 +34,15 @@ const Login = () => {
       if (response.success) {
         // Handle successful login
         console.log("Login successful:", response);
+        console.log("token for auth",response.token);
+        
+        localStorage.setItem("auth-token",response.token);
+
         if(response.user.role ==="user"){
           navigate("/jobsearch")
         }
         else if(response.user.role==="company"){
-          navigate("/companyHome")
+          navigate("/company/home")
         }
         // Redirect or perform other actions as needed
       } else {

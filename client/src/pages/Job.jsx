@@ -18,6 +18,8 @@ import { useEffect, useState } from "react";
 import { jobDetailsService, applyJobService } from "../service/service";
 import CongratulationBlast  from "../components/CongratulationBlast";
 import ConfettiExplosion from "react-confetti-explosion";
+import DOMPurify from 'dompurify';
+
 
 const Job = () => {
   const { jobId } = useParams();
@@ -242,17 +244,25 @@ const Job = () => {
         </div>
 
         <div className="job-part">
-          
           <div className="abt-job1">
             <p className="job-headings">About the Role</p>
-
-            <p
+            <div
               style={{
-                fontSize: "1.1rem",
+                margin: "0 2rem",
               }}
             >
-              {response.job.jobDescription}
-            </p>
+              <p
+                style={{
+                  fontSize: "1.1rem",
+                }}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(
+                    response.job.jobDescription ||
+                      "<p>Description not available</p>"
+                  ),
+                }}
+              ></p>
+            </div>
 
             <p className="job-headings">Skills Required</p>
             <div className="skill-tags">
@@ -265,7 +275,18 @@ const Job = () => {
 
             <div>
               <p className="job-headings">Requiremnts for the job</p>
-              <p>{response.job.qualifications}</p>
+              <p
+                style={{
+                  fontSize: "1.1rem",
+                  margin:"0 2rem "
+                }}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(
+                    response.job.qualifications ||
+                      "<p>Description not available</p>"
+                  ),
+                }}
+              ></p>
             </div>
 
             <div>
@@ -551,7 +572,7 @@ const Job = () => {
           >
             Apply Now
           </Button>
-          
+
           <CongratulationBlast show={isApplied} />
         </div>
       </div>
