@@ -20,4 +20,5 @@ router.post(
   upload.single("resume"),
   userController.updateprofile
 );
+router.get("/getUserdetails",fetchUser,userController.getUserDetails);
 module.exports=router;

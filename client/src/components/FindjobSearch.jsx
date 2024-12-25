@@ -12,7 +12,7 @@ import { CiBookmark } from "react-icons/ci";
 import { FcGoogle } from "react-icons/fc";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
-import { bookmarkJobService,getBookmarkJobsService } from "../service/service";
+import { bookmarkJobService,getBookmarkJobsService,removeBookmarkJobService } from "../service/service";
 import { FcBookmark } from "react-icons/fc";
 
 const FindjobSearch = () => {
@@ -186,15 +186,35 @@ const FindjobSearch = () => {
  };
 
  const handleBookmark = async (id) => {
-   const result = await bookmarkJobService(id);
-   if (!result) {
-     alert("Failed to bookmark");
-   } else {
-     alert("Bookmarked successfully");
+   try {
+     if (bookmarkedJobIds.has(id)) {
+       // Job is already bookmarked, so remove it
+       const result = await removeBookmarkJobService(id);
+       if (result) {
+         setBookmarkedJobIds((prev) => {
+           const updated = new Set(prev);
+           updated.delete(id); // Remove from the bookmarked set
+           return updated;
+         });
+         alert("Bookmark removed successfully");
+       } else {
+         alert("Failed to remove bookmark");
+       }
+     } else {
+       // Job is not bookmarked, so add it
+       const result = await bookmarkJobService(id);
+       if (result) {
+         setBookmarkedJobIds((prev) => new Set(prev).add(id)); // Add to the bookmarked set
+         alert("Bookmarked successfully");
+       } else {
+         alert("Failed to bookmark");
+       }
+     }
+   } catch (error) {
+     console.error("Error handling bookmark:", error);
    }
-
-   console.log("bookmarked job id:", id);
  };
+
 
  // Log filtered jobs and filters for debugging purposes
  useEffect(() => {

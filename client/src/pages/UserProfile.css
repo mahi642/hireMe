@@ -10,13 +10,15 @@
 }
 .profile-input-value {
   font-family: "Times New Roman", Times, serif;
-  background-color: rgb(183, 175, 175);
+  background-color: white;
   padding: 1.2rem 1rem;
   border-radius: 1rem;
   font-size: 1.3rem;
-  color: rgb(85, 21, 21);
+  color: black;
   width: 80%;
   margin: 1rem auto;
+   word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 .skill-profile p{
    background-color: rgb(146, 218, 218);

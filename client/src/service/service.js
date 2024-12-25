@@ -682,6 +682,29 @@ const getCompaniesForAdminService = async () => {
   }
 }
 
+const getUserProfileDataService = async ()=>{
+  try{
+    const token = localStorage.getItem("auth-token");
+    const url = `${import.meta.env.VITE_API_BASE_URL}/api/user/getUserdetails`;
+    const response = await fetch(url,{
+      method:"GET",
+      headers:{
+        "Content-Type": "application/json",
+        "auth-token": token,
+      }
+    })
+    if(!response.ok){
+      console.log("error in getting response from backend for user profile in service")
+    }
+    const data = response.json();
+    console.log("data in service",data)
+    return data;
+  }
+  catch(e){
+    console.log("Error in getting user profile data in service ", e);
+  }
+}
+
 
 
   export {
@@ -708,6 +731,7 @@ const getCompaniesForAdminService = async () => {
     getDashboardDataService,
     getTotalCostService,
     getCompaniesForAdminService,
-    getUsersForAdminService
+    getUsersForAdminService,
+    getUserProfileDataService
   }
 

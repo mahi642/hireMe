@@ -1,9 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./UserProfile.css";
 import UserSidebar from "../components/UserSideBar";
 import { Grid, Box, Button } from "@mui/joy";
+import { useNavigate } from "react-router-dom";
+import { getUserProfileDataService } from "../service/service";
 
 const UserProfile = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true); // Default loading to true
+  const [data, setData] = useState(null); // Default data to null
+
+  const handleEdit = () => {
+    navigate("/user/profile");
+  };
+
+  const fetchData = async () => {
+    try {
+      setLoading(true); // Start loading
+      const response = await getUserProfileDataService();
+      if (!response) {
+        console.error("Error in fetching user profile data.");
+      } else {
+        setData(response);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // Render a loading indicator
+  }
+
+  if (!data) {
+    return <div>Error: Unable to fetch data</div>; // Handle case where no data is returned
+  }
+
   return (
     <div>
       <p
@@ -11,13 +49,12 @@ const UserProfile = () => {
           fontSize: 30,
           textAlign: "center",
           fontFamily: "Times",
-          color: "rgb(160, 250, 256)",
+          color: "rgb(250, 90, 110)",
         }}
       >
         User Profile
       </p>
       <div style={{ display: "flex", width: "100%" }}>
-        {/* Left Sidebar with User Details */}
         <UserSidebar />
 
         <Grid
@@ -39,49 +76,70 @@ const UserProfile = () => {
               borderRadius: "1rem",
             }}
           >
-            <div style={{}}>
+            <div>
               <div className="profile-input-feild">
-                <p className="profile-input-label">User Name</p>
-                <div className="profile-input-value">Mahesh Balabadra</div>
+                <p className="profile-input-label">Name</p>
+                <div className="profile-input-value">{data.name || "N/A"}</div>
               </div>
 
               <div className="profile-input-feild">
                 <p className="profile-input-label">Email Address</p>
-                <div className="profile-input-value">
-                  maheshbalabdra186@gmial.com
-                </div>
+                <div className="profile-input-value">{data.email || "N/A"}</div>
               </div>
 
               <div className="profile-input-feild">
                 <p className="profile-input-label">Education</p>
                 <div className="profile-input-value">
-                  Bachelors of Technology
+                  {data.highestEducation || "N/A"}
                 </div>
               </div>
 
               <div className="profile-input-feild">
                 <p className="profile-input-label">Location</p>
-                <div className="profile-input-value">Chennai, India</div>
+                <div className="profile-input-value">
+                  {data.location || "N/A"}
+                </div>
               </div>
 
               <div className="profile-input-feild">
                 <p className="profile-input-label">Experience</p>
-                <div className="profile-input-value">3 years</div>
+                <div className="profile-input-value">
+                  {data.experience ? `${data.experience} years` : "N/A"}
+                </div>
               </div>
 
               <div className="profile-input-feild">
                 <p className="profile-input-label">Uploaded Resume</p>
-                <div className="profile-input-value">resume.pdf</div>
+                <div  style ={{
+                  textAlign:"justify",
+                  
+
+                }}className="profile-input-value">
+                  {data.resume?.url || "No resume uploaded"}
+                </div>
               </div>
 
               <div className="profile-input-feild">
-                <p className="profile-input-label">Joined HireMe on</p>
-                <div className="profile-input-value">21 December 2024</div>
+                <p
+                  style={{
+                    textAlign: "justify",
+                  }}
+                  className="profile-input-label"
+                >
+                  Joined HireMe on
+                </p>
+                <div className="profile-input-value">
+                  {data.createdAt
+                    ? new Intl.DateTimeFormat("en-US", {
+                        month: "long",
+                        year: "numeric",
+                      }).format(new Date(data.createdAt))
+                    : "N/A"}
+                </div>
               </div>
             </div>
           </Grid>
 
-          {/* Profile Image Section */}
           <Grid
             item
             xs={12}
@@ -91,7 +149,7 @@ const UserProfile = () => {
               padding: "1rem",
             }}
           >
-            <Box sx={{}}>
+            <Box>
               <img
                 src="/profile.svg"
                 alt="Profile"
@@ -122,11 +180,9 @@ const UserProfile = () => {
                   padding: "0.4rem",
                 }}
               >
-                I am a passionate and results-driven full-stack developer with
-                over 4 years of experience in building web applications. My
-                expertise lies in JavaScript, particularly in React, Node.js,
-                and MongoDB, where I have delivered scalable, user-friendly
-                solutions for various clients.
+                {data.aboutYourself
+                  ? data.aboutYourself.replace(/<\/?[^>]+(>|$)/g, "")
+                  : "N/A"}
               </div>
             </Box>
             <Box
@@ -151,16 +207,13 @@ const UserProfile = () => {
                 }}
                 className="skill-profile"
               >
-                <p>Cpp</p>
-                <p>React</p>
-                <p>Node.js</p>
-                <p>Express</p>
-                <p>MongoDB</p>
-                <p>Cpp</p>
-                <p>React</p>
-                <p>Node.js</p>
-                <p>Express</p>
-                <p>MongoDB</p>
+                {data.skills && data.skills.length > 0
+                  ? data.skills.map((skill, index) => (
+                      <p key={index} style={{ margin: "0.5rem",fontSize:"bold" }}>
+                        {skill}
+                      </p>
+                    ))
+                  : "No skills added"}
               </div>
             </Box>
           </Grid>
@@ -168,13 +221,15 @@ const UserProfile = () => {
       </div>
 
       <div className="profile-button">
-
-      <Button sx = {{
-        backgroundColor:"green",
-        padding:"1rem 2rem",
-      
-      }} >Edit profile</Button>
-
+        <Button
+          sx={{
+            backgroundColor: "green",
+            padding: "1rem 2rem",
+          }}
+          onClick={handleEdit}
+        >
+          Edit profile
+        </Button>
       </div>
     </div>
   );

@@ -469,5 +469,25 @@ module.exports.updateprofile = async (req, res) => {
   }
 };
 
+module.exports.getUserDetails = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    // Check if the role is not "user"
+    if (user.role !== "user") {
+      return res.status(400).json({ message: "Unauthorized access" });
+    }
+
+    // Send the entire user object as the response
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error("Error in fetching user details", error);
+    return res.status(500).json({
+      message: "Error in fetching user details",
+    });
+  }
+};
+
+
 
 

@@ -4,11 +4,11 @@ import AddLocationIcon from "@mui/icons-material/AddLocation";
 import { Grid, Button } from "@mui/joy";
 import ReactQuill from "react-quill"; // Import for the text editor
 import { updateUserProfileService } from "../service/service";
-
+import { useNavigate } from "react-router-dom";
 const UserProfileForm = () => {
   const [file, setFile] = useState(null);
   const [aboutYourself, setAboutYourself] = useState("");
-
+  const navigate = useNavigate();
   const handleFileChange = (e) => {
     e.preventDefault();
     const file = e.target.files[0];
@@ -38,6 +38,8 @@ const UserProfileForm = () => {
     try {
       const data = await updateUserProfileService(formData);
       alert("Profile updated successfully.");
+      navigate("/profile");
+
     } catch (error) {
       alert("Failed to update profile.");
     }
