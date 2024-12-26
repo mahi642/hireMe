@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Paper, Typography } from "@mui/material";
+import { Button, Paper, Typography } from "@mui/material";
 import "./CompanyProfile.css";
 import CompanyMenubar from "../components/CompanyMenubar";
 import { Grid } from "@mui/joy";
 import EmailIcon from "@mui/icons-material/Email";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { getCompanyDetailsService } from "../service/service";
-
+import { useNavigate } from "react-router-dom";
 const CompanyProfile = () => {
   const [data, setData] = useState(null); // Start with null for loading state
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -27,6 +28,11 @@ const CompanyProfile = () => {
     fetchData();
   }, []); // Empty dependency array to run on mount
 
+  const handleEditProfile = ()=>{
+    navigate("/company/profileform")
+
+  }
+
   if (!data) {
     return <Typography variant="h6">Loading...</Typography>;
   }
@@ -36,9 +42,30 @@ const CompanyProfile = () => {
       <CompanyMenubar />
 
       <div className="profile-main" style={{ width: "100%" }}>
-        <Typography variant="h4" style={{ marginBottom: "1rem" }}>
-          Company Profile
-        </Typography>
+        <div
+          style={{
+            display: "flex",
+
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography variant="h4" style={{ marginBottom: "1rem" }}>
+            Company Profile
+          </Typography>
+
+          <Button
+          onClick = {handleEditProfile}
+            style={{
+              backgroundColor: "#f0f0f0", // Soft neutral background
+              color: "#333", // Dark text for contrast
+              padding:"0 0.5rem",
+              height:"2.5rem"
+            }}
+           
+          >
+            Edit Profile
+          </Button>
+        </div>
 
         <Grid container spacing={3} className="profile-grid">
           {/* Left side - logo and name */}
@@ -127,7 +154,7 @@ const CompanyProfile = () => {
                 justifyContent: "space-around",
               }}
             >
-              <p style={{ fontSize: "1.4rem", margin: "1rem 0" }}>
+              <p style={{ fontSize: "1.3 rem", margin: "1rem 0" }}>
                 Number of employees
               </p>
               <p style={{ fontSize: "1.3rem", margin: "1rem 0" }}>
@@ -159,7 +186,7 @@ const CompanyProfile = () => {
                       key={index}
                     >
                       {facility}
-                      {index < data.facilitiesProvided.length - 1 ? ", " : ""}
+                      {index < data.facilitiesProvided.length - 1 ? "" : ""}
                     </span>
                   ))}
               </p>

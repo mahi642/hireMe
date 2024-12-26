@@ -388,7 +388,52 @@ module.exports.getTotalCost = async (req, res) => {
   }
 };
 
+module.exports.updateCompanyDetails = async (req, res) => {
+  try {
+    const data = req.body; // Incoming data
+    const userId = req.user.id; // Extract user ID from token (verified earlier)
 
+    // Find the user by ID
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const userEmail = user.email; // Email of the user
+
+    // Find the company document matching the user's email
+    const company = await Company.findOne({ email: userEmail });
+    if (!company) {
+      return res.status(404).json({ message: "Company not found" });
+    }
+
+    // Update company details using request data
+    const updatedCompany = await Company.findByIdAndUpdate(
+      company._id,
+      {
+        companyDescription:
+          data.companyDescription || company.companyDescription,
+        name: data.name || company.name,
+        numberOfEmployees: data.numberOfEmployees || company.numberOfEmployees,
+        facilitiesProvided: data.facilitesProvided
+          ? data.facilitesProvided.split(",") // Split comma-separated facilities
+          : company.facilitiesProvided,
+      },
+      { new: true } // Return the updated document
+    );
+
+    // Respond with success
+    res
+      .status(200)
+      .json({
+        message: "Company details updated successfully",
+        updatedCompany,
+      });
+  } catch (error) {
+    console.error("Error updating company details:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 
 

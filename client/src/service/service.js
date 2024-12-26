@@ -705,6 +705,41 @@ const getUserProfileDataService = async ()=>{
   }
 }
 
+const updateCompanyDetails = async (formData) => {
+  try {
+    const token = localStorage.getItem("auth-token");
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const url = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/company/updateCompanyDetails`;
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": token,
+      },
+      body: JSON.stringify(formData),
+    });
+
+    // Check if the response is okay
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to update company details");
+    }
+
+    // Parse and return the response
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error in updateCompanyDetails service:", error);
+    throw error; // Re-throw the error for further handling
+  }
+};
+
 
 
   export {
@@ -732,6 +767,7 @@ const getUserProfileDataService = async ()=>{
     getTotalCostService,
     getCompaniesForAdminService,
     getUsersForAdminService,
-    getUserProfileDataService
+    getUserProfileDataService,
+    updateCompanyDetails
   }
 

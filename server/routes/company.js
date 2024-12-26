@@ -11,6 +11,11 @@ router.get("/applications/:jobId",fetchUser,companyController.getApplications);
 router.get("/companyUserdetails",fetchUser,companyController.getUsersforCompany);
 router.get("/dashboarddata",fetchUser,companyController.getDashboardData);
 router.get("/totalcosttojob",fetchUser,companyController.getTotalCost);
+router.post(
+  "/updateCompanyDetails",
+  fetchUser,
+  companyController.updateCompanyDetails
+);
 
 
 
@@ -18,3 +23,4 @@ router.get("/totalcosttojob",fetchUser,companyController.getTotalCost);
 
 
 module.exports = router;
+

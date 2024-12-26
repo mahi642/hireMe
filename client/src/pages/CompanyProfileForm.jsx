@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./CompanyProfileForm.css";
 import Grid from "@mui/joy/Grid";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Quill's styles
 import Button from "@mui/material/Button"; // Importing Material-UI Button
+import { useNavigate } from "react-router-dom";
+import { updateCompanyDetails } from "../service/service";
+
 
 const CompanyProfileForm = () => {
+  const [triggerSave, setTriggerSave] = useState(false); // State to trigger fetch
   const [formData, setFormData] = useState({
     companyName: "",
     companyDescription: "",
@@ -14,6 +18,42 @@ const CompanyProfileForm = () => {
     companyFacilities: "",
   });
 
+  const navigate = useNavigate();
+
+  const fetchDetails = async () => {
+    try {
+      const data = await updateCompanyDetails(formData);
+      if (!data) {
+        alert("Failed to fetch company details");
+      } else {
+        console.log("Form data is", data);
+        navigate("/company/profile"); 
+      }
+    } catch (error) {
+      console.error("Error in fetching company details:", error);
+      alert(
+        "An error occurred while fetching company details. Please try again."
+      );
+    }
+  };
+
+  // Trigger fetchDetails when `triggerSave` becomes true
+  useEffect(() => {
+    if (triggerSave) {
+      fetchDetails().finally(() => setTriggerSave(false)); // Reset trigger after fetch
+    }
+  }, [triggerSave]);
+
+  const handleSave = () => {
+    if (!formData || Object.keys(formData).length === 0) {
+      alert("Please fill out the form before saving.");
+      return;
+    }
+    setTriggerSave(true); // Trigger fetchDetails
+  };
+  const handleCancel = () => {
+    navigate("/company/profile");
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -27,7 +67,7 @@ const CompanyProfileForm = () => {
     console.log("Form Data Submitted:", formData);
     // You can handle form submission logic here (e.g., send data to API)
   };
-
+  console.log(formData);
   return (
     <div className="company-profile-container">
       <div className="company-profile-form">
@@ -115,8 +155,20 @@ const CompanyProfileForm = () => {
                 backgroundColor: "#e38d3f",
                 margin: "1rem",
               }}
+              onClick={handleSave}
             >
-              save
+              Save
+            </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              style={{
+                backgroundColor: "#e38d3f",
+                margin: "1rem",
+              }}
+              onClick={handleCancel}
+            >
+              Cancel
             </Button>
           </div>
         </form>
